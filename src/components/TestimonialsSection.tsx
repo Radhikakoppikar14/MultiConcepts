@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Star, MessageSquarePlus, CheckCircle2, ChevronUp, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { INITIAL_TESTIMONIALS, Testimonial } from '../data/websiteData';
+import { Carousel } from './FX';
 
 export const TestimonialsSection: React.FC = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>(INITIAL_TESTIMONIALS);
@@ -186,12 +187,12 @@ export const TestimonialsSection: React.FC = () => {
         </AnimatePresence>
 
         {/* Testimonials Cards Grid with quote glyph & hover lift */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {testimonials.map((t) => (
+        <Carousel
+          items={testimonials}
+          render={(t) => (
             <motion.div
-              key={t.id}
               whileHover={{ y: -8 }}
-              className="card-interactive group bg-slate-50/80 hover:bg-white rounded-3xl border border-slate-200/90 hover:border-blue-400 p-5 sm:p-9 flex flex-col justify-between shadow-xs hover:shadow-[0_20px_45px_-12px_rgba(30,58,138,0.14)] transition-all duration-350 relative overflow-hidden"
+              className="card-interactive group h-full bg-slate-50/80 hover:bg-white rounded-3xl border border-slate-200/90 hover:border-blue-400 p-5 sm:p-9 flex flex-col justify-between shadow-xs hover:shadow-[0_20px_45px_-12px_rgba(30,58,138,0.14)] transition-all duration-350 relative overflow-hidden"
             >
               {/* Background quote decoration */}
               <div className="absolute top-4 right-4 text-slate-200/60 group-hover:text-blue-100 transition-colors pointer-events-none">
@@ -224,8 +225,8 @@ export const TestimonialsSection: React.FC = () => {
                 <div className="text-[11px] text-slate-400 mt-1">{t.date}</div>
               </div>
             </motion.div>
-          ))}
-        </div>
+          )}
+        />
       </div>
     </section>
   );

@@ -21,6 +21,7 @@ import { ContactModal } from './components/ContactModal';
 import { Footer } from './components/Footer';
 import { Phone, MessageCircle } from 'lucide-react';
 import { COMPANY_INFO } from './data/websiteData';
+import { SectionReveal, ScrollProgress, PageLoader, BackToTop } from './components/Effects';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>('home');
@@ -61,14 +62,19 @@ export default function App() {
   };
 
   const pageTransition = {
-    initial: { opacity: 0, y: 4 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0 },
-    transition: { duration: 0.12, ease: [0.16, 1, 0.3, 1] as const },
+    initial: { opacity: 0, y: 28, scale: 0.99 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: -14, transition: { duration: 0.15 } },
+    transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const },
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 text-slate-800 antialiased font-sans">
+      {/* New: intro splash, scroll progress bar, cursor glow, back-to-top */}
+      <PageLoader />
+      <ScrollProgress />
+      <BackToTop />
+
       {/* Top Header */}
       <Header
         currentTab={currentTab}
@@ -99,25 +105,39 @@ export default function App() {
               <LiveMarquee />
 
               {/* Core Services Section */}
-              <ServicesSection onSelectServiceForInquiry={handleServiceInquiry} />
+              <SectionReveal>
+                <ServicesSection onSelectServiceForInquiry={handleServiceInquiry} />
+              </SectionReveal>
 
               {/* Our Promise: Quality, Time, Cost */}
-              <PromiseSection />
+              <SectionReveal>
+                <PromiseSection />
+              </SectionReveal>
 
               {/* Dark bento showcase of real projects */}
-              <ProjectsShowcase onExploreGallery={() => handleSelectTab('gallery')} />
+              <SectionReveal>
+                <ProjectsShowcase onExploreGallery={() => handleSelectTab('gallery')} />
+              </SectionReveal>
 
               {/* How we build: animated process timeline */}
-              <ProcessTimeline />
+              <SectionReveal>
+                <ProcessTimeline />
+              </SectionReveal>
 
               {/* Our Assurance: Your Vision, Our Priority */}
-              <AssuranceSection onOpenContact={() => handleOpenContactModal('Paramount Assurance Inquiry')} />
+              <SectionReveal>
+                <AssuranceSection onOpenContact={() => handleOpenContactModal('Paramount Assurance Inquiry')} />
+              </SectionReveal>
 
               {/* Client Testimonials */}
-              <TestimonialsSection />
+              <SectionReveal>
+                <TestimonialsSection />
+              </SectionReveal>
 
               {/* Contact & Inquiry Section */}
-              <ContactSection initialSubject="New Construction Project Consultation" />
+              <SectionReveal>
+                <ContactSection initialSubject="New Construction Project Consultation" />
+              </SectionReveal>
             </motion.div>
           )}
 
@@ -135,8 +155,12 @@ export default function App() {
           {currentTab === 'services' && (
             <motion.div key="services" {...pageTransition}>
               <ServicesSection onSelectServiceForInquiry={handleServiceInquiry} />
-              <PromiseSection />
-              <ContactSection initialSubject="Services Consultation Request" />
+              <SectionReveal>
+                <PromiseSection />
+              </SectionReveal>
+              <SectionReveal>
+                <ContactSection initialSubject="Services Consultation Request" />
+              </SectionReveal>
             </motion.div>
           )}
 
@@ -144,7 +168,9 @@ export default function App() {
           {currentTab === 'gallery' && (
             <motion.div key="gallery" {...pageTransition}>
               <GallerySection />
-              <ContactSection initialSubject="Inquiry regarding Portfolio Projects" />
+              <SectionReveal>
+                <ContactSection initialSubject="Inquiry regarding Portfolio Projects" />
+              </SectionReveal>
             </motion.div>
           )}
 

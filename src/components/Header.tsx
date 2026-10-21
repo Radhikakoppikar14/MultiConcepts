@@ -127,8 +127,11 @@ export const Header: React.FC<HeaderProps> = ({
             {navItems.map((item) => {
               const isActive = currentTab === item.id;
               return (
-                <button
+                <motion.button
                   key={item.id}
+                  initial={{ opacity: 0, y: -14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.25 + navItems.indexOf(item) * 0.07, ease: 'easeOut' }}
                   onClick={() => handleNavClick(item.id)}
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl whitespace-nowrap cursor-pointer group ${
                     isActive
@@ -146,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
-                </button>
+                </motion.button>
               );
             })}
           </nav>

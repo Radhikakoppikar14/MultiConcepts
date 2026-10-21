@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ArrowUpRight, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { COMPANY_INFO } from '../data/websiteData';
+import { Reveal, SplitText, EASE } from './Effects';
 
 interface ContactSectionProps {
   initialSubject?: string;
@@ -41,22 +42,65 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading with Live Beacon */}
-        <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-950 border border-blue-500/40 text-xs font-bold uppercase tracking-wider text-blue-300 mb-3 shadow-md">
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>Initiate Your Blueprint</span>
-          </div>
-          <h2 className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white text-balance">
-            Ready to Start Your <span className="text-gradient-live">Project?</span>
+        <div className="relative max-w-3xl mx-auto text-center mb-10 sm:mb-12">
+          {/* Pulsing glow behind the heading */}
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-40 sm:w-[28rem] sm:h-56 rounded-full bg-sky-500/20 blur-3xl animate-pulse-glow pointer-events-none" />
+
+          {/* Badge: springs in, sparkle spins, text flashes, light sweeps across */}
+          <motion.div
+            initial={{ opacity: 0, y: -26, scale: 0.8 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: 'spring', stiffness: 260, damping: 16 }}
+            className="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-950 border border-blue-500/40 text-xs font-bold uppercase tracking-wider text-blue-300 mb-4 shadow-md overflow-hidden"
+          >
+            <span className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-slide-in-out" />
+            <Sparkles className="relative w-3.5 h-3.5 text-blue-400 animate-spin-slow" />
+            <span className="relative animate-flash-burst">Initiate Your Blueprint</span>
+          </motion.div>
+
+          {/* Heading: words slide up, "Project?" pops in then keeps bobbing */}
+          <h2 className="relative text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white text-balance">
+            <SplitText text="Ready to Start Your" delay={0.15} />{' '}
+            <motion.span
+              initial={{ opacity: 0, scale: 0.5, rotate: -8 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ type: 'spring', stiffness: 220, damping: 12, delay: 0.75 }}
+              className="inline-block"
+            >
+              <motion.span
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 1.6 }}
+                className="inline-block text-gradient-live"
+              >
+                Project?
+              </motion.span>
+            </motion.span>
           </h2>
-          <p className="text-base sm:text-lg text-slate-300 mt-4 leading-relaxed font-normal">
-            Let's discuss how we can bring your construction vision to life with our expertise and dedication.
-          </p>
+
+          {/* Underline draws itself, light keeps travelling along it */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 1, ease: EASE }}
+            style={{ transformOrigin: 'center' }}
+            className="relative mx-auto mt-4 h-1 w-28 rounded-full bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-400 overflow-hidden"
+          >
+            <span className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white to-transparent animate-slide-in-out" />
+          </motion.div>
+
+          <Reveal direction="blur" delay={0.6}>
+            <p className="relative text-base sm:text-lg text-slate-300 mt-5 leading-relaxed font-normal">
+              Let's discuss how we can bring your construction vision to life with our expertise and dedication.
+            </p>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Direct Contact Info Details */}
-          <div className="lg:col-span-5 space-y-8">
+          <Reveal direction="right" className="lg:col-span-5 space-y-8">
             <div className="bg-slate-800/80 rounded-3xl border border-slate-700/80 p-5 sm:p-10 backdrop-blur-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-white">Contact Info</h3>
@@ -136,10 +180,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </li>
               </ul>
             </div>
-          </div>
+          </Reveal>
 
           {/* Right Column: Contact Inquiry Form */}
-          <div className="lg:col-span-7 bg-white text-slate-800 rounded-3xl border border-slate-200 p-5 sm:p-10 shadow-2xl">
+          <Reveal direction="left" delay={0.15} className="lg:col-span-7 bg-white text-slate-800 rounded-3xl border border-slate-200 p-5 sm:p-10 shadow-2xl">
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-slate-900 tracking-tight">Send Us a Direct Message</h3>
               <p className="text-sm text-slate-600 mt-1">
@@ -256,7 +300,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </motion.button>
               </form>
             )}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

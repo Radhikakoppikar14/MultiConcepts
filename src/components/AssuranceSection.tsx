@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck, ArrowRight, Phone, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ASSURANCE, COMPANY_INFO } from '../data/websiteData';
+import { SlideIn, TypeText, WaveText, Flash, PopIn } from './FX';
 
 interface AssuranceSectionProps {
   onOpenContact: () => void;
@@ -21,17 +22,19 @@ export const AssuranceSection: React.FC<AssuranceSectionProps> = ({
           {/* Left Column: Immediate visibility with no scroll lag */}
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-950/80 border border-blue-500/50 text-xs font-bold uppercase tracking-wider text-blue-300 shadow-xl shadow-blue-950/40">
-              <ShieldCheck className="w-4 h-4 text-blue-400" />
+              <Flash><ShieldCheck className="w-4 h-4 text-blue-400" /></Flash>
               <span>Paramount Guarantee</span>
             </div>
 
             <h2 className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white text-balance leading-tight">
-              Your Vision, Our <span className="text-gradient-live">Priority</span>
+              Your Vision, Our <WaveText text="Priority" className="text-sky-300 text-live-glow" amplitude={7} />
             </h2>
 
             <div className="space-y-4 text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
               {ASSURANCE.paragraphs.map((p, idx) => (
-                <p key={idx}>{p}</p>
+                <SlideIn key={idx} from={idx % 2 === 0 ? 'left' : 'right'} delay={idx * 0.1}>
+                  <TypeText as="p" speed={12} text={p} className="block" />
+                </SlideIn>
               ))}
             </div>
 
@@ -64,7 +67,7 @@ export const AssuranceSection: React.FC<AssuranceSectionProps> = ({
               {/* Glowing halo behind the seal */}
               <div className="absolute top-10 left-1/2 -translate-x-1/2 w-44 h-44 bg-blue-500/30 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-400/40 transition-colors" />
 
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-5 rounded-full overflow-hidden border-4 border-blue-400/70 shadow-2xl bg-white p-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+              <div className="fx-glow-border fx-breathe relative w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-5 rounded-full overflow-hidden border-4 border-blue-400/70 shadow-2xl bg-white p-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                 <img
                   src={COMPANY_INFO.badge}
                   alt="Paramount Enterprises Seal of Trust"
@@ -78,18 +81,18 @@ export const AssuranceSection: React.FC<AssuranceSectionProps> = ({
               </div>
 
               <div className="mt-5 pt-4 border-t border-white/15 space-y-2 text-xs text-slate-300 text-left">
-                <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Licensed Civil & Architectural Practice</span>
-                </div>
-                <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>ISO Quality Standard Material Compliance</span>
-                </div>
-                <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Over 250+ Successful Structural Deliveries</span>
-                </div>
+                {[
+                  'Licensed Civil & Architectural Practice',
+                  'ISO Quality Standard Material Compliance',
+                  'Over 250+ Successful Structural Deliveries',
+                ].map((label, i) => (
+                  <PopIn key={label} delay={0.15 * i}>
+                    <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 hover:translate-x-1 transition-all">
+                      <Flash><CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" /></Flash>
+                      <span>{label}</span>
+                    </div>
+                  </PopIn>
+                ))}
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'motion/react';
 import { COMPANY_INFO, STATS } from '../data/websiteData';
-import { SplitText, Magnetic, CountUp, TiltCard } from './Effects';
+import { SplitText, Magnetic, CountUp, TiltCard, Reveal, RotatingText } from './Effects';
 
 interface HeroSectionProps {
   onExploreGallery: () => void;
@@ -220,7 +220,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           transition={{ duration: 0.3 }}
           className="inline-flex items-center justify-center gap-2 max-w-full px-3 sm:px-4 py-1.5 rounded-2xl sm:rounded-full bg-slate-900/80 border border-white/20 backdrop-blur-md text-[10px] min-[400px]:text-[11px] sm:text-xs font-semibold uppercase tracking-wide sm:tracking-wider leading-snug text-center text-blue-200 mb-5 sm:mb-6 shadow-xl"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+          <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0 animate-flash" />
           <span className="min-w-0">Bangalore Legacy Since 1999 · Paramount Enterprises</span>
         </motion.div>
 
@@ -231,6 +231,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <SplitText text="Your dreams made a reality" delay={0.3} />
           </span>
         </h1>
+
+        {/* Rotating words: roll in and out on a loop */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="mb-4 sm:mb-5 inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-base min-[400px]:text-lg sm:text-2xl font-semibold"
+        >
+          <span className="text-slate-300">We build</span>
+          <span className="px-3 py-0.5 rounded-lg bg-white/10 border border-white/20 backdrop-blur-md text-sky-300 font-bold">
+            <RotatingText
+              words={['Dream Homes', 'Luxury Villas', 'Apartments', 'Commercial Spaces', 'Interiors', 'Landmarks']}
+            />
+          </span>
+        </motion.div>
 
         {/* Subtitle: High contrast, clearly readable */}
         <motion.p
@@ -245,7 +260,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </motion.p>
 
         {/* CTA Buttons: Centered outlined "View Gallery" button + Consultation action with Magnetic effect */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-5 w-full max-w-sm sm:max-w-none sm:w-auto mb-10 sm:mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 28, scale: 0.92 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+          className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-5 w-full max-w-sm sm:max-w-none sm:w-auto mb-10 sm:mb-14"
+        >
           <Magnetic strength={0.18}>
             <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
@@ -268,28 +288,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </Magnetic>
-        </div>
+        </motion.div>
 
-        {/* Trust Badges Bar */}
+        {/* Trust Badges Bar: slide in from alternating sides, check icons flash */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-2 sm:gap-6 text-xs sm:text-sm text-slate-200 mb-8 w-full max-w-xs sm:max-w-4xl">
-          <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-black/30 backdrop-blur-md border border-white/10">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Uncompromised Quality</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-black/30 backdrop-blur-md border border-white/10">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>On-Time Milestone Handover</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-black/30 backdrop-blur-md border border-white/10">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>100% Transparent Costing</span>
-          </div>
+          {['Uncompromised Quality', 'On-Time Milestone Handover', '100% Transparent Costing'].map((label, i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -48 : 48 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.85 + i * 0.15, ease: 'easeOut' }}
+              className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-black/30 backdrop-blur-md border border-white/10"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-flash" style={{ animationDelay: `${i * 0.5}s` }} />
+              <span>{label}</span>
+            </motion.div>
+          ))}
         </div>
 
         {/* Live Metrics Counters Row: Translucent glass cards with 3D TiltCard and CountUp */}
         <div className="w-full pt-6 sm:pt-8 border-t border-white/15 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {STATS.map((stat, index) => (
-            <TiltCard key={index} maxTilt={6}>
+            <Reveal key={index} direction="flip" delay={0.9 + index * 0.12} className="h-full">
+              <TiltCard maxTilt={6}>
               <div className="p-3 sm:p-5 rounded-2xl h-full bg-slate-900/60 hover:bg-slate-900/80 border border-white/15 hover:border-blue-400/50 backdrop-blur-md transition-all duration-300 text-center shadow-lg group cursor-default">
                 <div className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-1 flex items-baseline justify-center text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-blue-200">
                   <CountUp target={stat.value} suffix={stat.suffix} />
@@ -302,6 +323,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </div>
               </div>
             </TiltCard>
+            </Reveal>
           ))}
         </div>
       </div>

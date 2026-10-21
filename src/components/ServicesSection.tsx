@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SERVICES } from '../data/websiteData';
+import { StaggerGroup, StaggerItem } from './Effects';
 
 interface ServicesSectionProps {
   onSelectServiceForInquiry: (serviceTitle: string) => void;
@@ -62,12 +63,17 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         </div>
 
         {/* 6 Services Grid (No images as requested) - Pure modern cards with live hover transitions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <StaggerGroup stagger={0.12} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {SERVICES.map((service, index) => (
+            <StaggerItem key={service.id} className="h-full" y={36}>
             <motion.div
-              key={service.id}
+              initial={{ opacity: 0, rotateY: index % 2 === 0 ? -70 : 70, scale: 0.9 }}
+              whileInView={{ opacity: 1, rotateY: 0, scale: 1 }}
+              viewport={{ margin: '-60px' }}
+              transition={{ duration: 0.8, delay: (index % 3) * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              style={{ transformPerspective: 1200 }}
               whileHover={{ y: -8 }}
-              className="card-interactive group flex flex-col justify-between glass hover:bg-white/10 rounded-3xl hover:border-sky-400/50 p-5 sm:p-9 relative overflow-hidden"
+              className="card-interactive group flex h-full flex-col justify-between glass hover:bg-white/10 rounded-3xl hover:border-sky-400/50 p-5 sm:p-9 relative overflow-hidden"
             >
               {/* Dynamic top gradient bar on hover */}
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -75,7 +81,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               <div>
                 <div className="flex items-center justify-between mb-7">
                   {/* Dynamic icon box with hover rotation and gradient */}
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 group-hover:bg-gradient-to-br group-hover:from-blue-600 group-hover:to-indigo-600 text-sky-300 group-hover:text-white border border-white/15 group-hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-xl group-hover:shadow-blue-600/30 group-hover:rotate-6">
+                  <div className="w-14 h-14 rounded-2xl bg-white/10 group-hover:bg-gradient-to-br group-hover:from-blue-600 group-hover:to-indigo-600 text-sky-300 group-hover:text-white border border-white/15 group-hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-xl group-hover:shadow-blue-600/30 group-hover:rotate-6 icon-pop">
                     {getServiceIcon(service.iconName)}
                   </div>
                   <span className="text-4xl sm:text-5xl font-extrabold text-white/10 group-hover:text-sky-400/50 font-mono tracking-tight transition-colors">
@@ -125,8 +131,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 </motion.button>
               </div>
             </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

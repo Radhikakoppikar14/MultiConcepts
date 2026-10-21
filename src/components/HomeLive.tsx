@@ -50,7 +50,7 @@ export const LiveMarquee: React.FC = () => {
                 <item.icon className="w-4 h-4 text-sky-400 shrink-0" />
                 <span>{item.label}</span>
               </div>
-              <Sparkles className="w-3.5 h-3.5 text-amber-300/80 shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-300/80 shrink-0 animate-flash" style={{ animationDelay: `${(i % 4) * 0.35}s` }} />
             </div>
           ))}
         </div>
@@ -110,7 +110,7 @@ export const ProcessTimeline: React.FC = () => {
 
           <StaggerGroup className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6" stagger={0.14}>
             {STEPS.map((step, i) => (
-              <StaggerItem key={step.title}>
+              <StaggerItem key={step.title} variant="flip">
                 <div className="group relative flex md:flex-col items-start md:items-center gap-4 md:gap-5 md:text-center">
                   <motion.div
                     whileHover={{ scale: 1.12, rotate: -6 }}
@@ -188,7 +188,7 @@ export const ProjectsShowcase: React.FC<{ onExploreGallery: () => void }> = ({ o
             return (
               <Reveal
                 key={p.id}
-                direction="zoom"
+                direction={i % 2 === 0 ? 'flip' : 'flipY'}
                 delay={i * 0.07}
                 className={`${BENTO_SPANS[i] ?? ''} ${i >= 4 ? 'md:col-span-2' : ''}`}
               >

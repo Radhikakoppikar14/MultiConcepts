@@ -73,8 +73,10 @@ export const CursorGlow: React.FC = () => {
     return () => window.removeEventListener('mousemove', move);
   }, [fine, reduce, x, y]);
 
-  if (!fine || reduce) return null;
+  // Custom circle cursor + glow removed on request
+  return null;
 
+  // eslint-disable-next-line no-unreachable
   return (
     <>
       <motion.div
@@ -264,7 +266,7 @@ export const SmartImage: React.FC<SmartImageProps> = ({
 /*  Reveal: View-triggered animation with multiple directions          */
 /* ------------------------------------------------------------------ */
 
-type Direction = 'up' | 'down' | 'left' | 'right' | 'zoom' | 'blur';
+type Direction = 'up' | 'down' | 'left' | 'right' | 'zoom' | 'blur' | 'flip' | 'flipY' | 'rotate' | 'flash';
 
 interface RevealProps {
   children: React.ReactNode;
@@ -276,6 +278,9 @@ interface RevealProps {
   className?: string;
   once?: boolean;
 }
+
+const PERSPECTIVE = 1000;
+const FLASH_KEYS = [0, 0.2, 0.4, 0.6, 0.8, 1];
 
 export const Reveal: React.FC<RevealProps> = ({
   children,
@@ -290,7 +295,7 @@ export const Reveal: React.FC<RevealProps> = ({
   const reduce = useReducedMotion();
   const travelDistance = y !== undefined ? y : distance;
 
-  const getInitial = () => {
+  const getInitial = (): any => {
     if (reduce) return { opacity: 0 };
     switch (direction) {
       case 'up':
@@ -305,12 +310,25 @@ export const Reveal: React.FC<RevealProps> = ({
         return { opacity: 0, scale: 0.94, filter: 'blur(4px)' };
       case 'blur':
         return { opacity: 0, filter: 'blur(8px)' };
+      case 'flip':
+        return { opacity: 0, rotateX: -75, y: travelDistance, filter: 'blur(4px)', transformPerspective: PERSPECTIVE };
+      case 'flipY':
+        return { opacity: 0, rotateY: -80, filter: 'blur(4px)', transformPerspective: PERSPECTIVE };
+      case 'rotate':
+        return { opacity: 0, rotate: -8, scale: 0.88, y: travelDistance, filter: 'blur(4px)' };
+      case 'flash':
+        return { opacity: 0, scale: 0.96 };
     }
   };
 
-  const getAnimate = () => {
+  const getAnimate = (): any => {
     if (reduce) return { opacity: 1 };
-    return { opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' };
+    if (direction === 'flash') return { opacity: [0, 1, 0.35, 1, 0.7, 1], scale: 1 };
+    const base: any = { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, filter: 'blur(0px)' };
+    if (direction === 'flip') base.rotateX = 0;
+    if (direction === 'flipY') base.rotateY = 0;
+    if (direction === 'flip' || direction === 'flipY') base.transformPerspective = PERSPECTIVE;
+    return base;
   };
 
   return (
@@ -318,7 +336,11 @@ export const Reveal: React.FC<RevealProps> = ({
       initial={getInitial()}
       whileInView={getAnimate()}
       viewport={{ once, margin: '-40px' }}
-      transition={{ duration, delay, ease: EASE }}
+      transition={
+        direction === 'flash'
+          ? { duration: 0.9, delay, times: FLASH_KEYS, ease: 'easeOut' }
+          : { duration, delay, ease: EASE }
+      }
       className={className}
     >
       {children}
@@ -327,7 +349,7 @@ export const Reveal: React.FC<RevealProps> = ({
 };
 
 /* ------------------------------------------------------------------ */
-/*  StaggerGroup & StaggerItem                                         */
+/*  StaggerGroup & StaggerItem (with flip / slide / flash variants)    */
 /* ------------------------------------------------------------------ */
 
 export const StaggerGroup: React.FC<{
@@ -335,12 +357,13 @@ export const StaggerGroup: React.FC<{
   stagger?: number;
   delay?: number;
   className?: string;
-}> = ({ children, stagger = 0.08, delay = 0, className = '' }) => {
+  once?: boolean;
+}> = ({ children, stagger = 0.08, delay = 0, className = '', once = true }) => {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once, margin: '-40px' }}
       variants={{
         hidden: { opacity: 0 },
         visible: {
@@ -358,26 +381,261 @@ export const StaggerGroup: React.FC<{
   );
 };
 
+export type StaggerVariant =
+  | 'up'
+  | 'flip'
+  | 'flipY'
+  | 'fromLeft'
+  | 'fromRight'
+  | 'zoom'
+  | 'rotate'
+  | 'flash';
+
 export const StaggerItem: React.FC<{
   children: React.ReactNode;
   className?: string;
   y?: number;
-}> = ({ children, className = '', y = 18 }) => {
+  variant?: StaggerVariant;
+}> = ({ children, className = '', y = 18, variant = 'up' }) => {
+  const reduce = useReducedMotion();
+  const is3D = variant === 'flip' || variant === 'flipY';
+  const persp: any = is3D ? { transformPerspective: PERSPECTIVE } : {};
+
+  let hidden: any;
+  let visible: any = {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: 0,
+    rotateX: 0,
+    rotateY: 0,
+    filter: 'blur(0px)',
+    ...persp,
+    transition: { duration: 0.65, ease: EASE },
+  };
+
+  if (reduce) {
+    hidden = { opacity: 0 };
+    visible = { opacity: 1, transition: { duration: 0.3 } };
+  } else {
+    switch (variant) {
+      case 'flip':
+        hidden = { opacity: 0, y, rotateX: -80, filter: 'blur(4px)', ...persp };
+        break;
+      case 'flipY':
+        hidden = { opacity: 0, rotateY: -85, filter: 'blur(4px)', ...persp };
+        break;
+      case 'fromLeft':
+        hidden = { opacity: 0, x: -80, filter: 'blur(4px)' };
+        break;
+      case 'fromRight':
+        hidden = { opacity: 0, x: 80, filter: 'blur(4px)' };
+        break;
+      case 'zoom':
+        hidden = { opacity: 0, scale: 0.8, filter: 'blur(4px)' };
+        break;
+      case 'rotate':
+        hidden = { opacity: 0, rotate: -8, scale: 0.9, y, filter: 'blur(4px)' };
+        break;
+      case 'flash':
+        hidden = { opacity: 0, scale: 0.95 };
+        visible = {
+          ...visible,
+          opacity: [0, 1, 0.35, 1, 0.7, 1],
+          transition: { duration: 0.9, times: FLASH_KEYS, ease: 'easeOut' },
+        };
+        break;
+      default:
+        hidden = { opacity: 0, y, filter: 'blur(4px)' };
+    }
+  }
+
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y, filter: 'blur(4px)' },
-        visible: {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          transition: { duration: 0.5, ease: EASE },
-        },
-      }}
-      className={className}
-    >
+    <motion.div variants={{ hidden, visible }} className={className}>
       {children}
     </motion.div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  SectionReveal: whole section fades + rises in, then fades out      */
+/*  softly as it scrolls away (scroll-linked, no blur = smooth)        */
+/* ------------------------------------------------------------------ */
+
+export const SectionReveal: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className = '' }) => {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 0.07, 0.92, 1], [0.2, 1, 1, 0.2]);
+  const y = useTransform(scrollYProgress, [0, 0.07], [48, 0]);
+
+  if (reduce) return <div className={className}>{children}</div>;
+
+  return (
+    <motion.div ref={ref} style={{ opacity, y }} className={className}>
+      {children}
+    </motion.div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  FlipCard: 3D flip. Hover on desktop, tap on touch screens          */
+/* ------------------------------------------------------------------ */
+
+export const FlipCard: React.FC<{
+  front: React.ReactNode;
+  back: React.ReactNode;
+  className?: string;
+}> = ({ front, back, className = '' }) => {
+  const [flipped, setFlipped] = useState(false);
+  const fine = useIsFinePointer();
+  const reduce = useReducedMotion();
+
+  const face: React.CSSProperties = {
+    gridArea: '1 / 1',
+    backfaceVisibility: 'hidden',
+    WebkitBackfaceVisibility: 'hidden',
+  };
+
+  return (
+    <div
+      className={`relative ${className}`}
+      style={{ perspective: 1200 }}
+      role="button"
+      tabIndex={0}
+      aria-pressed={flipped}
+      onMouseEnter={() => fine && setFlipped(true)}
+      onMouseLeave={() => fine && setFlipped(false)}
+      onClick={() => !fine && setFlipped((f) => !f)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setFlipped((f) => !f);
+        }
+      }}
+    >
+      <motion.div
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 130, damping: 17 }}
+        style={{ transformStyle: 'preserve-3d', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)' }}
+        className="h-full"
+      >
+        <div style={face} className="h-full w-full min-w-0">
+          {front}
+        </div>
+        <div style={{ ...face, transform: 'rotateY(180deg)' }} className="h-full w-full min-w-0">
+          {back}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  Typewriter: types text letter by letter when scrolled into view    */
+/*  segments let parts of the text carry their own style (gradient...) */
+/* ------------------------------------------------------------------ */
+
+export const Typewriter: React.FC<{
+  segments: { text: string; className?: string }[];
+  speed?: number; // ms per character
+  delay?: number; // seconds before typing starts
+  cursor?: boolean;
+  className?: string;
+}> = ({ segments, speed = 40, delay = 0, cursor = true, className = '' }) => {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const reduce = useReducedMotion();
+  const full = segments.map((s) => s.text).join('');
+  const total = full.length;
+  const [count, setCount] = useState(reduce ? total : 0);
+
+  useEffect(() => {
+    if (!inView || reduce) return;
+    let i = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const start = setTimeout(() => {
+      timer = setInterval(() => {
+        i += 1;
+        setCount(i);
+        if (i >= total && timer) clearInterval(timer);
+      }, speed);
+    }, delay * 1000);
+    return () => {
+      clearTimeout(start);
+      if (timer) clearInterval(timer);
+    };
+  }, [inView, reduce, total, speed, delay]);
+
+  let remaining = count;
+  const parts = segments.map((seg, k) => {
+    const n = Math.max(0, Math.min(seg.text.length, remaining));
+    remaining -= n;
+    return (
+      <span key={k} className={seg.className}>
+        {seg.text.slice(0, n)}
+      </span>
+    );
+  });
+
+  const typing = inView && count < total;
+
+  return (
+    <span ref={ref} aria-label={full} className={`relative block w-full ${className}`}>
+      {/* invisible full text reserves the final size so nothing jumps or shifts */}
+      <span aria-hidden className="block invisible">
+        {full}
+      </span>
+      <span aria-hidden className="block absolute inset-0">
+        {parts}
+        {cursor && (typing || (inView && count === 0)) && (
+          <span className="inline-block w-[2px] h-[1em] ml-0.5 align-[-0.12em] bg-blue-600 animate-flash" />
+        )}
+      </span>
+    </span>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  RotatingText: words roll in and out (fade + flip) on a loop        */
+/* ------------------------------------------------------------------ */
+
+export const RotatingText: React.FC<{
+  words: string[];
+  interval?: number;
+  className?: string;
+}> = ({ words, interval = 2400, className = '' }) => {
+  const [index, setIndex] = useState(0);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    if (reduce || words.length < 2) return;
+    const t = setInterval(() => setIndex((i) => (i + 1) % words.length), interval);
+    return () => clearInterval(t);
+  }, [words.length, interval, reduce]);
+
+  return (
+    <span className={`relative inline-flex overflow-hidden align-bottom ${className}`} style={{ perspective: 600 }}>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={words[index]}
+          initial={{ y: '100%', opacity: 0, rotateX: -60 }}
+          animate={{ y: '0%', opacity: 1, rotateX: 0 }}
+          exit={{ y: '-100%', opacity: 0, rotateX: 60 }}
+          transition={{ duration: 0.45, ease: EASE }}
+          className="inline-block whitespace-nowrap"
+        >
+          {words[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
   );
 };
 

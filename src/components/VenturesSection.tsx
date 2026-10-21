@@ -2,6 +2,7 @@ import React from 'react';
 import { ExternalLink, Check, Sparkles, Shield, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { VENTURE_HAFELE } from '../data/websiteData';
+import { Reveal, EASE } from './Effects';
 
 interface VenturesSectionProps {
   onOpenContact: () => void;
@@ -48,7 +49,7 @@ export const VenturesSection: React.FC<VenturesSectionProps> = ({
         </div>
 
         {/* About Hafele Narrative */}
-        <section className="mb-20 max-w-4xl mx-auto">
+        <Reveal direction="blur" className="mb-20 max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">
               <span>Global Architectural Innovation</span>
@@ -63,7 +64,7 @@ export const VenturesSection: React.FC<VenturesSectionProps> = ({
               <p key={idx}>{para}</p>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* Product World Section */}
         <section className="mb-20">
@@ -83,7 +84,11 @@ export const VenturesSection: React.FC<VenturesSectionProps> = ({
             {VENTURE_HAFELE.sections.map((section, idx) => (
               <motion.div
                 key={idx}
-                whileHover={{ y: -8 }}
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -70 : 70, rotateY: idx % 2 === 0 ? -18 : 18, transformPerspective: 1000 }}
+                whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.7, ease: EASE }}
+                whileHover={{ y: -8, transition: { duration: 0.25 } }}
                 className="group bg-slate-50/80 hover:bg-white rounded-3xl border border-slate-200 hover:border-blue-300 p-5 sm:p-10 flex flex-col justify-between shadow-xs hover:shadow-[0_20px_45px_-12px_rgba(30,58,138,0.14)] transition-all duration-350 relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -127,7 +132,7 @@ export const VenturesSection: React.FC<VenturesSectionProps> = ({
         </section>
 
         {/* CTA Bar with Dynamic Live Buttons */}
-        <div className="bg-slate-100 rounded-3xl p-5 sm:p-10 border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 shadow-sm">
+        <Reveal direction="flash" className="bg-slate-100 rounded-3xl p-5 sm:p-10 border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 shadow-sm">
           <div>
             <h3 className="text-xl font-bold text-slate-900">
               Incorporate Hafele Solutions in Your Next Build
@@ -160,7 +165,7 @@ export const VenturesSection: React.FC<VenturesSectionProps> = ({
               <ExternalLink className="w-4 h-4 text-slate-500" />
             </motion.a>
           </div>
-        </div>
+        </Reveal>
       </div>
     </div>
   );

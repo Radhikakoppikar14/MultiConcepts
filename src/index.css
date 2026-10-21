@@ -405,3 +405,67 @@
 @media (prefers-reduced-motion: reduce) {
   .aurora-blob, .card-interactive::before { animation: none; transition: none; }
 }
+/* ==========================================================================
+   New animation utilities
+   ========================================================================== */
+
+/* Icon "pop" when its card is hovered */
+@keyframes iconPop {
+  0%   { transform: scale(1) rotate(0deg); }
+  40%  { transform: scale(1.22) rotate(-8deg); }
+  70%  { transform: scale(0.96) rotate(8deg); }
+  100% { transform: scale(1.1) rotate(6deg); }
+}
+.group:hover .icon-pop { animation: iconPop 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Hero scroll cue */
+@keyframes scrollCue {
+  0%   { transform: translateY(0); opacity: 1; }
+  70%  { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+.scroll-cue { animation: scrollCue 1.8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue, .group:hover .icon-pop { animation: none; }
+}
+
+/* ==========================================================================
+   Flash / blink / extra live motion
+   ========================================================================== */
+
+/* Soft flash in and out (icons, dots, badges) */
+@keyframes flashSoft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(0.88); }
+}
+.animate-flash { animation: flashSoft 1.8s ease-in-out infinite; }
+
+/* Sharp camera-style flash burst every few seconds */
+@keyframes flashBurst {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  6%  { opacity: 0.35; }
+  10% { opacity: 1; filter: brightness(1.7); }
+  16% { opacity: 0.6; }
+  22% { opacity: 1; filter: brightness(1); }
+}
+.animate-flash-burst { animation: flashBurst 5s ease-in-out infinite; }
+
+/* Slide-in / slide-out loop for decorative bars */
+@keyframes slideInOut {
+  0%   { transform: translateX(-110%); opacity: 0; }
+  30%, 70% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(110%); opacity: 0; }
+}
+.animate-slide-in-out { animation: slideInOut 3.4s ease-in-out infinite; }
+
+/* Gentle breathing scale */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.animate-breathe { animation: breathe 3.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flash, .animate-flash-burst, .animate-slide-in-out, .animate-breathe { animation: none; }
+}

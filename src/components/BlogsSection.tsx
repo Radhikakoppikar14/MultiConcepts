@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, Clock, ChevronDown, ChevronUp, Sparkles, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BLOG_POSTS } from '../data/websiteData';
+import { EASE } from './Effects';
 
 export const BlogsSection: React.FC = () => {
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
@@ -37,12 +38,16 @@ export const BlogsSection: React.FC = () => {
 
         {/* Blog Posts Grid with smooth image zoom & accordion animation */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
-          {BLOG_POSTS.map((post) => {
+          {BLOG_POSTS.map((post, index) => {
             const isExpanded = expandedPostId === post.id;
             return (
               <motion.article
                 key={post.id}
-                whileHover={{ y: -8 }}
+                initial={{ opacity: 0, y: 44, rotateX: -16, scale: 0.94, transformPerspective: 1000 }}
+                whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: EASE }}
+                whileHover={{ y: -8, transition: { duration: 0.25 } }}
                 className="bg-white rounded-3xl border border-slate-200/90 hover:border-blue-400 overflow-hidden shadow-xs hover:shadow-2xl hover:shadow-blue-900/15 transition-all duration-350 flex flex-col group relative"
               >
                 {/* Image: 100% Bright, Crisp and Fully Visible with Live Sheen & Smooth Zoom */}

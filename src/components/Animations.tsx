@@ -1,5 +1,9 @@
 export {
   Reveal,
+  SectionReveal,
+  FlipCard,
+  RotatingText,
+  Typewriter,
   StaggerGroup,
   StaggerItem,
   TiltCard,

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Maximize2, X, ChevronLeft, ChevronRight, MapPin, Tag, Sparkles, Eye, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GALLERY_PROJECTS, GalleryProject } from '../data/websiteData';
+import { EASE } from './Effects';
 
 export const GallerySection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -91,14 +92,15 @@ export const GallerySection: React.FC = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
         >
           <AnimatePresence>
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 layout
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0, y: 44, scale: 0.94, rotateX: -16, transformPerspective: 1000 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                exit={{ opacity: 0, scale: 0.94, rotateX: 12 }}
+                transition={{ duration: 0.55, delay: (index % 3) * 0.1, ease: EASE }}
                 whileHover={{ y: -8 }}
                 onClick={() => setActiveProject(project)}
                 className="group relative cursor-pointer overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-md hover:shadow-2xl hover:border-blue-500/70 transition-all duration-300 flex flex-col"
