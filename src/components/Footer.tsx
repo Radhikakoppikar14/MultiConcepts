@@ -4,7 +4,6 @@ import {
   Phone,
   Mail,
   Clock,
-  ArrowUp,
   ExternalLink,
   ShieldCheck,
   Sparkles,
@@ -255,15 +254,6 @@ export const Footer: React.FC<FooterProps> = ({
                 <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
               </a>
 
-              <motion.button
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={scrollToTop}
-                className="p-2.5 rounded-xl bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white transition-all cursor-pointer shadow-md"
-                aria-label="Scroll back to top"
-              >
-                <ArrowUp className="w-4 h-4" />
-              </motion.button>
             </div>
           </div>
         </Reveal>
