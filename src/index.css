@@ -1,0 +1,407 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: #1e293b;
+    background-color: #f8fafc;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.025em;
+  }
+
+  /* Smooth custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* ==========================================================================
+   Live Animations and Keyframes (Clean & Modern, No Dots/Grids)
+   ========================================================================== */
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes livePulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(59, 130, 246, 0.45);
+  }
+}
+
+@keyframes liveShineLoop {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  20%, 100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+@keyframes beaconPing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Live Utility Classes
+   ========================================================================== */
+
+/* Continuous animated text gradients */
+.text-gradient-live {
+  background: linear-gradient(90deg, #38bdf8 0%, #ffffff 30%, #818cf8 60%, #38bdf8 100%);
+  background-size: 250% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShift 6s ease-in-out infinite;
+}
+
+.text-gradient-primary {
+  background: linear-gradient(90deg, #1d4ed8 0%, #4338ca 40%, #0284c7 75%, #1d4ed8 100%);
+  background-size: 250% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShift 5s ease infinite;
+}
+
+/* Gentle Live Floating Movement */
+.animate-float-gentle {
+  animation: floatGentle 4.5s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: livePulseGlow 4s ease-in-out infinite;
+}
+
+/* Live Beacon Indicator (e.g. Available / Online) */
+.beacon-dot {
+  animation: beaconPing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Live Button Effects */
+.btn-live {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.btn-live:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-live:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Continuous Subtle Shimmer for High Priority Buttons */
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  animation: liveShineLoop 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Interactive Card Elevation with Smooth Transitions */
+.card-interactive {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  will-change: transform, box-shadow;
+}
+
+.card-interactive:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(59, 130, 246, 0.2);
+}
+
+/* Clean Button Hover Shine */
+.shine-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-hover::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0.32) 50%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  transform: rotate(25deg);
+  transition: all 0.75s ease;
+  pointer-events: none;
+}
+
+.shine-hover:hover::after {
+  left: 150%;
+}
+
+/* ==========================================================================
+   Live Interactive Textbox, Button, Image & Text Animation Utilities
+   ========================================================================== */
+
+/* Live Glowing Textbox with Instant Response */
+.input-live {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #ffffff;
+}
+
+.input-live:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.08);
+}
+
+.input-live:focus {
+  outline: none;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15), 0 8px 16px -4px rgba(37, 99, 235, 0.12);
+  background-color: #ffffff;
+}
+
+/* Live Dynamic Button with Smooth Shimmer and Bounce */
+.btn-live-smooth {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.btn-live-smooth:hover {
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.35);
+}
+
+.btn-live-smooth:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Live Image Container with Fluid Zoom and Continuous Ambient Light Sheen */
+@keyframes ambientImageSheen {
+  0% {
+    transform: translateX(-160%) skewX(-25deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.35;
+  }
+  60% {
+    transform: translateX(260%) skewX(-25deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(260%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+.img-live-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-live-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: translateX(-160%) skewX(-25deg);
+  animation: ambientImageSheen 7.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.img-live-card img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+  will-change: transform;
+}
+
+.img-live-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.04) contrast(1.02);
+}
+
+.img-live-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.img-live-card:hover::after {
+  opacity: 1;
+}
+
+/* Live Animated Text Glow */
+.text-live-glow {
+  text-shadow: 0 0 25px rgba(56, 189, 248, 0.45);
+}
+
+/* ==========================================================================
+   Modern Pro Layer: refined cards, glass, gradient accents
+   ========================================================================== */
+
+::selection { background: #2563eb; color: #fff; }
+
+/* Cards: gradient accent bar that sweeps in on hover + softer layered shadow */
+.card-interactive {
+  position: relative;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.08);
+}
+.card-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #38bdf8, #6366f1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 5;
+}
+.card-interactive:hover::before { transform: scaleX(1); }
+.card-interactive:hover {
+  box-shadow: 0 30px 60px -20px rgba(30, 64, 175, 0.25), 0 0 0 1px rgba(59, 130, 246, 0.25);
+}
+
+/* Glass surface utility */
+.glass {
+  background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Soft aurora blobs for dark sections */
+@keyframes auroraDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(30px, -20px, 0) scale(1.12); }
+}
+.aurora-blob { animation: auroraDrift 16s ease-in-out infinite; }
+
+/* Gradient hairline between sections */
+.section-hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.55), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob, .card-interactive::before { animation: none; transition: none; }
+}
