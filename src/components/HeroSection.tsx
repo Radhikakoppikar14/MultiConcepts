@@ -1,14 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'motion/react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowRight, Sparkles, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useScroll, useTransform } from 'motion/react';
 import { COMPANY_INFO, STATS } from '../data/websiteData';
-import { SplitText, Magnetic, CountUp, TiltCard, Reveal, RotatingText } from './Effects';
+import { SplitText, Magnetic, CountUp, TiltCard, Reveal } from './Effects';
 
 interface HeroSectionProps {
   onExploreGallery: () => void;
   onOpenContact: () => void;
   onSelectTab: (tab: string) => void;
 }
+
+// Hero video slider: one video + one caption per slide
+const SLIDE_DURATION = 10000; // ms, matches the 10s clips
+const SLIDES = [
+  {
+    src: '/assests/videos/hero-1.mp4',
+    poster: '/assests/videos/hero-1.jpg',
+    caption: 'Construction of commercial and residential complexes',
+  },
+  {
+    src: '/assests/videos/hero-2.mp4',
+    poster: '/assests/videos/hero-2.jpg',
+    caption: 'Renovation of residential houses and apartments',
+  },
+];
 
 // Atmospheric drifting particles to give a live outdoor ambient feeling
 const LiveAtmosphereMotes: React.FC = () => {
@@ -64,6 +79,27 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const containerRef = useRef<HTMLElement | null>(null);
 
+  // Slider state
+  const [slide, setSlide] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const next = useCallback(() => setSlide((s) => (s + 1) % SLIDES.length), []);
+  const prev = useCallback(() => setSlide((s) => (s - 1 + SLIDES.length) % SLIDES.length), []);
+
+  // Play the active video from the start, pause the others, auto-advance
+  useEffect(() => {
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === slide) {
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+    const t = setTimeout(next, SLIDE_DURATION);
+    return () => clearTimeout(t);
+  }, [slide, next]);
+
   // Mouse Parallax for interactive live feel
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -103,18 +139,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="absolute -inset-10 pointer-events-none"
         >
           <motion.div style={{ y: parallaxY }} className="w-full h-full">
-            {/* Background video: 8s, muted, looping. Falls back to the old image as poster */}
-            <video
-              src="/assests/videos/hero.mp4"
-              poster={COMPANY_INFO.heroBg}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              aria-label="MultiConcepts Construction Engineering"
-              className="w-full h-full object-cover object-center brightness-[0.98] contrast-[1.04]"
-            />
+            {/* Slider videos: cross-fade, muted, looping */}
+            {SLIDES.map((sl, i) => (
+              <video
+                key={sl.src + i}
+                ref={(el) => { videoRefs.current[i] = el; }}
+                src={sl.src}
+                poster={sl.poster}
+                autoPlay={i === 0}
+                muted
+                loop
+                playsInline
+                preload={i === 0 ? 'auto' : 'metadata'}
+                aria-label={sl.caption}
+                aria-hidden={i !== slide}
+                className={`absolute inset-0 w-full h-full object-cover object-center brightness-[0.98] contrast-[1.04] transition-opacity duration-1000 ease-in-out ${
+                  i === slide ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            ))}
           </motion.div>
         </motion.div>
 
@@ -162,26 +205,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="absolute -top-16 -left-16 sm:-top-24 sm:-left-20 w-[280px] h-[280px] sm:w-[500px] sm:h-[500px] bg-gradient-to-br from-blue-500/20 via-sky-400/15 to-transparent rounded-full blur-3xl pointer-events-none mix-blend-screen z-[1]"
         />
 
-        {/* Live Construction Tower Crane Aviation Warning Beacons */}
-        <div className="absolute top-[28%] left-[52%] pointer-events-none z-[2]">
-          <span className="relative flex h-2.5 w-2.5">
-            <span
-              className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-90"
-              style={{ animationDuration: '1.4s' }}
-            />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-300 shadow-[0_0_10px_rgba(251,191,36,1)]" />
-          </span>
-        </div>
-        <div className="absolute top-[35%] left-[78%] pointer-events-none z-[2]">
-          <span className="relative flex h-2.5 w-2.5">
-            <span
-              className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-90"
-              style={{ animationDuration: '1.8s' }}
-            />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-400 shadow-[0_0_10px_rgba(248,113,113,1)]" />
-          </span>
-        </div>
-
         {/* Live Atmospheric Drifting Particles */}
         <LiveAtmosphereMotes />
 
@@ -191,6 +214,44 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Top & Bottom gradient edge blend */}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-slate-950/60 to-transparent pointer-events-none z-[3]" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent pointer-events-none z-[3]" />
+      </div>
+
+      {/* Slider controls: progress bars + arrows */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex items-center gap-2 sm:gap-3">
+        <button
+          onClick={prev}
+          aria-label="Previous slide"
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/30 hover:bg-blue-600 border border-white/25 backdrop-blur-md flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <div className="flex items-center gap-1.5">
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className="relative h-1.5 w-8 sm:w-12 rounded-full bg-white/25 overflow-hidden cursor-pointer"
+            >
+              {i === slide && (
+                <motion.span
+                  key={slide}
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: SLIDE_DURATION / 1000, ease: 'linear' }}
+                  className="absolute inset-y-0 left-0 bg-sky-300 rounded-full"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={next}
+          aria-label="Next slide"
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/30 hover:bg-blue-600 border border-white/25 backdrop-blur-md flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Giant outlined watermark (tablet and larger) */}
@@ -223,20 +284,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </span>
         </h1>
 
-        {/* Rotating words: roll in and out on a loop */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          className="mb-4 sm:mb-5 inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-base min-[400px]:text-lg sm:text-2xl font-semibold"
-        >
-          <span className="text-slate-300">We build</span>
-          <span className="px-3 py-0.5 rounded-lg bg-white/10 border border-white/20 backdrop-blur-md text-sky-300 font-bold">
-            <RotatingText
-              words={['Dream Homes', 'Luxury Villas', 'Apartments', 'Commercial Spaces', 'Interiors', 'Landmarks']}
-            />
-          </span>
-        </motion.div>
+        {/* Slide caption: changes with each video */}
+        <div className="mb-4 sm:mb-5 min-h-[4.5rem] sm:min-h-[4rem] lg:min-h-[4.5rem] flex items-center justify-center w-full">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slide}
+              initial={{ opacity: 0, y: 18, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -14, filter: 'blur(4px)' }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="px-4 sm:px-6 py-2 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md text-sky-200 font-bold text-base min-[400px]:text-lg sm:text-2xl lg:text-3xl leading-snug text-balance max-w-3xl shadow-xl"
+            >
+              {SLIDES[slide].caption}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Subtitle: High contrast, clearly readable */}
         <motion.p
