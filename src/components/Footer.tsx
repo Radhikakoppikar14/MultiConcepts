@@ -4,7 +4,6 @@ import {
   Phone,
   Mail,
   Clock,
-  ExternalLink,
   ShieldCheck,
   Sparkles,
   ArrowUpRight,
@@ -244,15 +243,7 @@ export const Footer: React.FC<FooterProps> = ({
             <p>© {COMPANY_INFO.copyrightYear} MultiConcepts & Paramount Enterprises. All Rights Reserved.</p>
 
             <div className="flex items-center gap-6">
-              <a
-                href={COMPANY_INFO.developerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
-              >
-                <span>{COMPANY_INFO.developerCredit}</span>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
-              </a>
+              <span>Developed by <span className="font-semibold text-white">Taarruni Enterprises</span></span>
 
             </div>
           </div>

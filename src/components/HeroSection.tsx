@@ -96,32 +96,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       onMouseLeave={handleMouseLeave}
       className="relative overflow-hidden bg-slate-950 text-white min-h-[85svh] lg:min-h-[90svh] flex flex-col justify-center"
     >
-      {/* Background Image Container with Live Ken Burns, Parallax & Effects */}
+      {/* Background video container with parallax & effects */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Parallax & Continuous Cinematic Drift Layer */}
         <motion.div
           style={{ x: springX, y: springY }}
           className="absolute -inset-10 pointer-events-none"
         >
-          {/* Scroll parallax + slow Ken Burns zoom */}
           <motion.div style={{ y: parallaxY }} className="w-full h-full">
-            <motion.img
-              src={COMPANY_INFO.heroBg}
-              alt="MultiConcepts Construction Engineering"
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
-              animate={{
-                scale: [1.05, 1.14, 1.08, 1.05],
-                x: [0, -18, 12, 0],
-                y: [0, -10, -4, 0],
-              }}
-              transition={{
-                duration: 24,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="w-full h-full object-cover object-center will-change-transform brightness-[0.98] contrast-[1.04]"
+            {/* Background video: 8s, muted, looping. Falls back to the old image as poster */}
+            <video
+              src="/assests/videos/hero.mp4"
+              poster={COMPANY_INFO.heroBg}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-label="MultiConcepts Construction Engineering"
+              className="w-full h-full object-cover object-center brightness-[0.98] contrast-[1.04]"
             />
           </motion.div>
         </motion.div>
@@ -193,14 +185,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Live Atmospheric Drifting Particles */}
         <LiveAtmosphereMotes />
 
-        {/* Balanced Translucent Dark Overlay */}
+        {/* Balanced Translucent Dark Overlay (change /50 to /30 lighter or /65 darker) */}
         <div className="absolute inset-0 bg-slate-950/50 backdrop-brightness-[0.88] z-[2]" />
 
         {/* Top & Bottom gradient edge blend */}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-slate-950/60 to-transparent pointer-events-none z-[3]" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent pointer-events-none z-[3]" />
       </div>
-
 
       {/* Giant outlined watermark (tablet and larger) */}
       <div
@@ -259,7 +250,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           construction projects that exceed all expectations.
         </motion.p>
 
-        {/* CTA Buttons: Centered outlined "View Gallery" button + Consultation action with Magnetic effect */}
+        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 28, scale: 0.92 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -290,7 +281,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </Magnetic>
         </motion.div>
 
-        {/* Trust Badges Bar: slide in from alternating sides, check icons flash */}
+        {/* Trust Badges Bar */}
         <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-2 sm:gap-6 text-xs sm:text-sm text-slate-200 mb-8 w-full max-w-xs sm:max-w-4xl">
           {['Uncompromised Quality', 'On-Time Milestone Handover', '100% Transparent Costing'].map((label, i) => (
             <motion.div
@@ -306,7 +297,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           ))}
         </div>
 
-        {/* Live Metrics Counters Row: Translucent glass cards with 3D TiltCard and CountUp */}
+        {/* Live Metrics Counters Row */}
         <div className="w-full pt-6 sm:pt-8 border-t border-white/15 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {STATS.map((stat, index) => (
             <Reveal key={index} direction="flip" delay={0.9 + index * 0.12} className="h-full">

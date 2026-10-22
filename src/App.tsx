@@ -28,26 +28,29 @@ export default function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [modalSubject, setModalSubject] = useState<string>('');
 
-  // Handle URL hash changes for deep linking
+  // .php style URLs (e.g. /about.php) - served by the vercel.json rewrites
+  const TAB_TO_PATH: Record<string, string> = {
+    home: '/index.php',
+    about: '/about.php',
+    services: '/services.php',
+    gallery: '/gallery.php',
+    ventures: '/ventures.php',
+    blogs: '/blogs.php',
+  };
+  const pathToTab = (path: string) =>
+    Object.entries(TAB_TO_PATH).find(([, p]) => p === path)?.[0] ?? 'home';
+
+  // Sync the tab with the URL on load, back/forward buttons
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (['home', 'about', 'services', 'gallery', 'ventures', 'blogs'].includes(hash)) {
-        setCurrentTab(hash);
-      }
-    };
-
-    if (window.location.hash) {
-      handleHashChange();
-    }
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    setCurrentTab(pathToTab(window.location.pathname));
+    const handlePopState = () => setCurrentTab(pathToTab(window.location.pathname));
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const handleSelectTab = (tab: string) => {
     setCurrentTab(tab);
-    window.location.hash = tab;
+    window.history.pushState({}, '', TAB_TO_PATH[tab] ?? '/index.php');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -104,10 +107,10 @@ export default function App() {
               {/* Live scrolling services ribbon */}
               <LiveMarquee />
 
-              {/* Core Services Section */}
-              <SectionReveal>
-                <ServicesSection onSelectServiceForInquiry={handleServiceInquiry} />
-              </SectionReveal>
+              {/* Core Services: carousel, 3 cards at a time sliding to the next 3 */}
+            <SectionReveal>
+              <ServicesSection layout="carousel" onSelectServiceForInquiry={handleServiceInquiry} />
+            </SectionReveal>
 
               {/* Our Promise: Quality, Time, Cost */}
               <SectionReveal>
