@@ -55,7 +55,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
   }, [slide, next]);
 
   return (
-    <section className="relative overflow-hidden bg-slate-950 text-white min-h-[60svh] lg:min-h-[65svh] flex flex-col justify-center">
+    <section className="relative overflow-hidden bg-slate-950 text-white min-h-[60svh] lg:min-h-[65svh] flex flex-col justify-end">
       {/* Background videos + a single dark overlay */}
       <div className="absolute inset-0 z-0">
         {SLIDES.map((sl, i) => (
@@ -76,7 +76,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
             }`}
           />
         ))}
-        <div className="absolute inset-0 bg-slate-950/55 sm:bg-transparent sm:bg-gradient-to-r sm:from-slate-950/80 sm:via-slate-950/40 sm:to-transparent" />
+        <div className="absolute inset-0 bg-slate-950/45 sm:bg-gradient-to-r sm:from-slate-950/70 sm:via-slate-950/35 sm:to-slate-950/15" />
       </div>
 
       {/* Slide controls */}
@@ -118,7 +118,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-14 text-left flex flex-col items-start">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
         <div className="w-full max-w-xl lg:max-w-2xl flex flex-col items-start">
         {/* Slide caption */}
         <div className="min-h-[5.5rem] sm:min-h-[7rem] lg:min-h-[8rem] flex items-center w-full">
@@ -141,32 +141,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
           </AnimatePresence>
         </div>
 
-        <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-slate-200 leading-relaxed max-w-xl">
-          Welcome to Multiconcepts, your trusted partner for all your construction needs.
-          With years of experience in this industry, dedicated to delivering outstanding
-          construction projects that exceed all expectations.
-        </p>
-
-        {/* Highlight pills: pop in one by one, check icons pulse in turn */}
-        <div className="mt-4 sm:mt-5 flex flex-nowrap items-center gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {HIGHLIGHTS.map((label, i) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 16, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.4 + i * 0.15 }}
-              whileHover={{ y: -2, scale: 1.04 }}
-              className="inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-950/60 hover:bg-slate-900/80 backdrop-blur-md border border-white/10 hover:border-emerald-400/40 text-[11px] sm:text-xs font-medium text-slate-100 whitespace-nowrap shadow-md shadow-black/20 transition-colors cursor-default"
-            >
-              <CheckCircle2
-                className="w-3.5 h-3.5 text-emerald-400 shrink-0 animate-flash"
-                style={{ animationDelay: `${i * 0.5}s` }}
-              />
-              <span>{label}</span>
-            </motion.div>
-          ))}
-        </div>
-
         {/* Stats: number + label only */}
         <div className="mt-7 sm:mt-9 w-full pt-5 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
           {STATS.map((stat, i) => (
@@ -180,6 +154,35 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
             </div>
           ))}
         </div>
+        </div>
+
+        {/* Supporting copy and highlights sit at the lower-right, just above the services scroller. */}
+        <div className="relative translate-y-2 sm:translate-y-3 w-full max-w-xl lg:max-w-2xl lg:justify-self-end flex flex-col items-end text-right">
+          <p className="text-xs sm:text-sm lg:text-base font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed max-w-xl">
+            Welcome to Multiconcepts, your trusted partner for all your construction needs.
+            With years of experience in this industry, dedicated to delivering outstanding
+            construction projects that exceed all expectations.
+          </p>
+
+          {/* Highlight pills: pop in one by one, check icons pulse in turn */}
+          <div className="mt-4 sm:mt-5 flex flex-wrap justify-end items-center gap-1.5 sm:gap-2 max-w-full pb-1">
+            {HIGHLIGHTS.map((label, i) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 16, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.4 + i * 0.15 }}
+                whileHover={{ y: -2, scale: 1.04 }}
+                className="inline-flex shrink-0 items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-950/60 hover:bg-slate-900/80 backdrop-blur-md border border-white/10 hover:border-emerald-400/40 text-[10px] sm:text-[11px] font-medium text-slate-100 whitespace-nowrap shadow-md shadow-black/20 transition-colors cursor-default"
+              >
+                <CheckCircle2
+                  className="w-3 h-3 text-emerald-400 shrink-0 animate-flash"
+                  style={{ animationDelay: `${i * 0.5}s` }}
+                />
+                <span>{label}</span>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
