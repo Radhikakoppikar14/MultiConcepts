@@ -41,8 +41,8 @@ const SLIDES = [
   },
   {
     // 3. Property management: well-maintained interiors / professional property care
-    src: '/assests/videos/hero-1.mp4',
-    poster: '/assests/videos/hero-1.jpg',
+    src: '/assests/videos/hero-3.mp4',
+    poster: '/assests/videos/hero-3.jpg',
     title: 'Property Management Services',
     lead: 'Total Care for',
     accent: 'Your Valued Assets',
