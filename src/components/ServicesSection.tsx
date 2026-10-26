@@ -3,7 +3,8 @@ import {
   Home,
   Building2,
   Compass,
-  Hammer,
+  Landmark,
+  Sun,
   ShieldCheck,
   Palette,
   ArrowRight,
@@ -34,8 +35,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         return <Building2 className="w-6 h-6 transition-transform duration-300 group-hover:scale-115" />;
       case 'Compass':
         return <Compass className="w-6 h-6 transition-transform duration-300 group-hover:scale-115" />;
-      case 'Hammer':
-        return <Hammer className="w-6 h-6 transition-transform duration-300 group-hover:scale-115" />;
+      case 'Landmark':
+        return <Landmark className="w-6 h-6 transition-transform duration-300 group-hover:scale-115" />;
+      case 'Sun':
+        return <Sun className="w-6 h-6 transition-transform duration-300 group-hover:scale-115" />;
       case 'ShieldCheck':
         return <ShieldCheck className="w-6 h-6 transition-transform duration-300 group-hover:scale-115" />;
       case 'Palette':
@@ -53,34 +56,33 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               transition={{ duration: 0.8, delay: (index % 3) * 0.12, ease: [0.16, 1, 0.3, 1] }}
               style={{ transformPerspective: 1200 }}
               whileHover={{ y: -8 }}
-              className="card-interactive group flex h-full flex-col justify-between glass hover:bg-white/10 rounded-3xl hover:border-sky-400/50 p-5 sm:p-9 relative overflow-hidden"
+              className="card-interactive group flex h-full flex-col glass hover:bg-white/10 rounded-3xl hover:border-sky-400/50 p-5 sm:p-9 relative overflow-hidden"
             >
               {/* Dynamic top gradient bar on hover */}
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div>
-                <div className="flex items-center justify-between mb-7">
+                <div className="flex items-center gap-4 mb-5 min-h-[3.5rem]">
                   {/* Dynamic icon box with hover rotation and gradient */}
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 group-hover:bg-gradient-to-br group-hover:from-blue-600 group-hover:to-indigo-600 text-sky-300 group-hover:text-white border border-white/15 group-hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-xl group-hover:shadow-blue-600/30 group-hover:rotate-6 icon-pop">
+                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-white/10 group-hover:bg-gradient-to-br group-hover:from-blue-600 group-hover:to-indigo-600 text-sky-300 group-hover:text-white border border-white/15 group-hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-xl group-hover:shadow-blue-600/30 group-hover:rotate-6 icon-pop">
                     {getServiceIcon(service.iconName)}
                   </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-sky-200 transition-colors tracking-tight leading-tight">
+                    {service.title}
+                  </h3>
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-sky-200 transition-colors mb-2 tracking-tight">
-                  {service.title}
-                </h3>
-
-                <p className="text-xs font-semibold uppercase tracking-wider text-sky-400 mb-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-sky-400 mb-3">
                   {service.tagline}
                 </p>
 
-                <p className="text-sm text-slate-300 leading-relaxed mb-6 font-normal">
+                <p className="text-sm text-slate-300 leading-relaxed font-normal md:min-h-[4.3rem]">
                   {service.description}
                 </p>
               </div>
 
-              <div className="pt-6 border-t border-white/10 space-y-5">
-                <div>
+              <div className="mt-6 pt-6 border-t border-white/10 flex flex-1 flex-col gap-5">
+                <div className="flex-1">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2.5">
                     Key Specifications
                   </div>
@@ -103,7 +105,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   onClick={() => onSelectServiceForInquiry(service.title)}
                   className="btn-live-smooth btn-shimmer shine-hover w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 text-xs font-semibold text-white bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 hover:from-blue-600 hover:to-indigo-500 rounded-xl transition-all duration-300 shadow-md shadow-blue-700/20 hover:shadow-xl hover:shadow-blue-600/30 cursor-pointer group/btn"
                 >
-                  <span>Inquire About {service.title}</span>
+                  <span>Inquire Now</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1.5" />
                 </motion.button>
               </div>

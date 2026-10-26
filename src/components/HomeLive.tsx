@@ -1,14 +1,13 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
-  Home,
   Building2,
-  Hammer,
   Ruler,
   ShieldCheck,
   Paintbrush,
   Key,
   HardHat,
+  Sun,
   ClipboardList,
   Sparkles,
   ArrowUpRight,
@@ -21,12 +20,12 @@ import { Reveal, StaggerGroup, StaggerItem, EASE } from './Effects';
 /* ------------------------------------------------------------------ */
 
 const MARQUEE_ITEMS = [
-  { icon: Home, label: 'Residential Construction' },
-  { icon: Building2, label: 'Commercial Spaces' },
-  { icon: Ruler, label: 'Architectural Design' },
-  { icon: Hammer, label: 'Renovation & Remodeling' },
-  { icon: Paintbrush, label: 'Interior Design' },
+  { icon: Building2, label: 'Residential & Commercial Construction' },
+  { icon: ClipboardList, label: 'Real Estate Consultancy' },
   { icon: ShieldCheck, label: 'Property Management' },
+  { icon: Paintbrush, label: 'Interior Works' },
+  { icon: Sun, label: 'Solar Power' },
+  { icon: Ruler, label: 'Architectural Design' },
   { icon: HardHat, label: 'Since 1999 · Bangalore' },
 ];
 

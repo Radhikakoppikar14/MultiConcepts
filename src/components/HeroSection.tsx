@@ -10,26 +10,44 @@ interface HeroSectionProps {
   onSelectTab: (tab: string) => void;
 }
 
-// One video + one caption per slide.
+// One video + one caption (title, tagline, description) per slide.
 // The clips are split-screen (left | right). On phones only the RIGHT half is shown
 // (see the max-sm: classes on the <video>). To show the left half instead, swap
 // max-sm:right-0 for max-sm:left-0 and drop max-sm:left-auto.
 const HIGHLIGHTS = ['Uncompromised Quality', 'On-Time Milestone Handover', '100% Transparent Costing'];
 const SLIDE_DURATION = 10000; // ms, matches the 10s clips
+// TODO: final videos are not ready yet, so the two existing clips are reused (hero-1 / hero-2).
+// When the new videos arrive, just change the `src` / `poster` of each slide below.
 const SLIDES = [
   {
+    // 1. Construction: active residential and commercial building progress
     src: '/assests/videos/hero-1.mp4',
     poster: '/assests/videos/hero-1.jpg',
-    caption: 'Construction of commercial and residential complexes',
-    lead: 'Construction of',
-    accent: 'commercial and residential complexes',
+    title: 'Construction — Residential / Commercial Complexes',
+    lead: 'Building Quality,',
+    accent: 'Shaping Futures',
+    description:
+      'Delivering expert construction execution for both residential villas and commercial complexes to bring blueprints to life.',
   },
   {
+    // 2. Real estate consultancy: property scouting, land investment, location planning
     src: '/assests/videos/hero-2.mp4',
     poster: '/assests/videos/hero-2.jpg',
-    caption: 'Renovation of residential houses and apartments',
-    lead: 'Renovation of',
-    accent: 'residential houses and apartments',
+    title: 'Real Estate Consultancy',
+    lead: 'Your Trusted Guide in',
+    accent: 'Property Investment',
+    description:
+      'Providing professional guidance, market insights, and strategic assistance to clients for purchasing land, plots, and properties.',
+  },
+  {
+    // 3. Property management: well-maintained interiors / professional property care
+    src: '/assests/videos/hero-1.mp4',
+    poster: '/assests/videos/hero-1.jpg',
+    title: 'Property Management Services',
+    lead: 'Total Care for',
+    accent: 'Your Valued Assets',
+    description:
+      'Managing properties completely on behalf of owners and NRIs, taking care of tenant placement, maintenance, and administrative details.',
   },
 ];
 
@@ -69,7 +87,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
             loop
             playsInline
             preload={i === 0 ? 'auto' : 'metadata'}
-            aria-label={sl.caption}
+            aria-label={sl.title}
             aria-hidden={i !== slide}
             className={`absolute inset-0 w-full h-full object-cover max-sm:left-auto max-sm:right-0 max-sm:w-auto max-sm:min-w-[200%] max-sm:max-w-none transition-opacity duration-1000 ease-in-out ${
               i === slide ? 'opacity-100' : 'opacity-0'
@@ -94,7 +112,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
               key={i}
               onClick={() => setSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="relative h-1.5 w-8 sm:w-10 rounded-full bg-white/25 overflow-hidden cursor-pointer"
+              className="relative h-1.5 w-6 sm:w-10 rounded-full bg-white/25 overflow-hidden cursor-pointer"
             >
               {i === slide && (
                 <motion.span
@@ -118,31 +136,39 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-8 sm:py-10 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
         <div className="w-full max-w-xl lg:max-w-2xl flex flex-col items-start">
-        {/* Slide caption */}
-        <div className="min-h-[5.5rem] sm:min-h-[7rem] lg:min-h-[8rem] flex items-center w-full">
+        {/* Slide caption: title, tagline, description */}
+        <div className="min-h-[12rem] sm:min-h-[13.5rem] lg:min-h-[14.5rem] flex items-center w-full">
           <AnimatePresence mode="wait">
-            <motion.h1
+            <motion.div
               key={slide}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.4 }}
-              className="text-[1.625rem] min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.1]"
+              className="w-full"
             >
-              <span className="block">{SLIDES[slide].lead}</span>
-              <span className="block mt-1 font-bold">
-                <span className="text-gradient-live [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
-                  {SLIDES[slide].accent}
+              <p className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] mb-3">
+                {SLIDES[slide].title}
+              </p>
+              <h1 className="text-[1.625rem] min-[400px]:text-3xl sm:text-4xl lg:text-[2.6rem] xl:text-5xl font-extrabold tracking-tight text-white leading-[1.1]">
+                <span className="block">{SLIDES[slide].lead}</span>
+                <span className="block mt-1 font-bold">
+                  <span className="text-gradient-live [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
+                    {SLIDES[slide].accent}
+                  </span>
                 </span>
-              </span>
-            </motion.h1>
+              </h1>
+              <p className="mt-3 text-sm sm:text-base font-medium text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed max-w-lg text-justify [text-align-last:left] hyphens-auto">
+                {SLIDES[slide].description}
+              </p>
+            </motion.div>
           </AnimatePresence>
         </div>
 
         {/* Stats: number + label only */}
-        <div className="mt-7 sm:mt-9 w-full pt-5 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
+        <div className="mt-5 sm:mt-6 w-full pt-4 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
           {STATS.map((stat, i) => (
             <div key={i} className="text-left">
               <div className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline justify-start">
@@ -158,14 +184,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
 
         {/* Supporting copy and highlights sit at the lower-right, just above the services scroller. */}
         <div className="relative translate-y-2 sm:translate-y-3 w-full max-w-xl lg:max-w-2xl lg:justify-self-end flex flex-col items-end text-right">
-          <p className="text-xs sm:text-sm lg:text-base font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed max-w-xl">
-            Welcome to Multiconcepts, your trusted partner for all your construction needs.
-            With years of experience in this industry, dedicated to delivering outstanding
-            construction projects that exceed all expectations.
+          <p className="text-xs sm:text-sm lg:text-base font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed w-full max-w-xl text-justify [text-align-last:left] hyphens-auto">
+            Welcome to Multiconcepts, your trusted partner for construction, real estate consultancy
+            and property management. With years of experience in the industry, we are dedicated
+            to delivering outstanding projects that exceed expectations.
           </p>
 
           {/* Highlight pills: pop in one by one, check icons pulse in turn */}
-          <div className="mt-4 sm:mt-5 flex flex-wrap justify-end items-center gap-1.5 sm:gap-2 max-w-full pb-1">
+          <div className="mt-4 sm:mt-5 flex flex-wrap justify-between items-center gap-1.5 sm:gap-2 w-full max-w-xl pb-1">
             {HIGHLIGHTS.map((label, i) => (
               <motion.div
                 key={label}

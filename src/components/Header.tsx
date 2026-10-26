@@ -107,8 +107,8 @@ export const Header: React.FC<HeaderProps> = ({
                 src={COMPANY_INFO.logo}
                 alt="MultiConcepts Logo"
                 priority
-                className="object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
-                wrapperClassName="h-10 w-10 sm:h-12 sm:w-12 shrink-0 bg-transparent!"
+                className="h-full! w-auto! max-w-none object-contain! transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
+                wrapperClassName="h-11 sm:h-14 w-auto! min-w-11 shrink-0 bg-transparent! overflow-visible!"
               />
             </div>
             <div className="flex flex-col min-w-0">

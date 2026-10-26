@@ -25,7 +25,7 @@ export interface TimelineMilestone {
 export interface GalleryProject {
   id: string;
   title: string;
-  category: 'Residential' | 'Commercial' | 'Architecture' | 'Interiors' | 'Renovation';
+  category: 'Residential' | 'Commercial' | 'Architecture' | 'Interiors';
   imageSrc: string;
   description: string;
   location?: string;
@@ -88,52 +88,52 @@ export const STATS = [
 
 export const SERVICES: ServiceItem[] = [
   {
-    id: 'residential',
-    title: 'Residential Construction',
-    tagline: 'Transforming Houses into Homes',
-    description: 'Transforming Houses into Homes from luxurious estates to cozy family abodes. Our residential construction expertise transforms architectural visions into warm, functional, and aesthetically pleasing living spaces. Experience the perfect blend of comfort and style.',
-    iconName: 'Home',
-    features: ['Custom luxury villas & independent homes', 'Gated community developments & apartments', 'Climate-resilient construction materials', 'Turnkey execution from foundation to interior handover'],
+    id: 'construction',
+    title: 'Residential & Commercial Construction',
+    tagline: 'Building Quality, Shaping Futures',
+    description: 'Delivering expert construction execution for both residential and commercial projects to bring structural blueprints to life.',
+    iconName: 'Building2',
+    features: ['Residential villa and independent home construction', 'Commercial complex and corporate building development', 'On-site quality control and structural durability standards', 'Timely project milestone delivery and execution'],
   },
   {
-    id: 'commercial',
-    title: 'Commercial Construction',
-    tagline: 'Building Success, Brick by Brick',
-    description: 'Building Success, Brick by Brick. Our commercial construction prowess is evident in the creation of innovative business environments. Whether it’s an office space that fosters productivity or a retail outlet that draws customers, we excel in crafting those spaces that would catalyze success.',
-    iconName: 'Building2',
-    features: ['Modern corporate office facilities', 'High-traffic commercial complexes & retail showrooms', 'Engineered acoustic and structural load bearing', 'Stringent compliance with safety and building bylaws'],
+    id: 'real-estate-consultancy',
+    title: 'Real Estate Consultancy',
+    tagline: 'Your Trusted Guide in Property Investment',
+    description: 'Providing professional guidance, market insights, and strategic assistance to clients for purchasing land, plots, and properties.',
+    iconName: 'Landmark',
+    features: ['Land and plot acquisition guidance', 'Market trend analysis and location scouting', 'Legal verification and title deed assistance', 'Investment portfolio advisory for optimal returns'],
+  },
+  {
+    id: 'property-management',
+    title: 'Property Management Services',
+    tagline: 'Total Care for Your Valued Assets',
+    description: 'Managing properties completely on behalf of owners and NRIs, taking care of every operational and administrative detail.',
+    iconName: 'ShieldCheck',
+    features: ['Tenant sourcing, screening, and agreement handling', 'Regular maintenance, upkeep, and cleaning coordination', 'Rental collection and tax payment administration', 'Periodic property inspection reports for remote owners'],
+  },
+  {
+    id: 'interior-works',
+    title: 'Project Distribution / Interior Works',
+    tagline: 'Transforming Spaces, Maximizing Reach',
+    description: 'Showcasing expert project distribution services alongside sophisticated interior design and execution works.',
+    iconName: 'Palette',
+    features: ['Comprehensive interior styling and layout planning', 'Commercial and residential interior execution', 'Strategic project distribution and marketing support', 'Custom spatial aesthetics and finish optimization'],
+  },
+  {
+    id: 'solar-power',
+    title: 'Solar Power',
+    tagline: 'Harnessing Clean Energy for Tomorrow',
+    description: 'Integrating sustainable, renewable energy solutions and solar power installations to modernize properties and reduce energy costs.',
+    iconName: 'Sun',
+    features: ['Rooftop solar panel design and installation', 'Grid-tied and off-grid system integration', 'Energy efficiency consultation and carbon footprint reduction', 'Long-term maintenance and power output optimization'],
   },
   {
     id: 'architectural',
     title: 'Architectural Design',
     tagline: 'Where Imagination Meets Reality',
-    description: 'Where Imagination Meets Reality. Paramount Enterprises stands at the forefront for architectural creativity. Our team of creative minds with technical expertise collaborate to design structures that push boundaries, merge form with functionality, and leave a lasting impression.',
+    description: 'Designing structures that push boundaries, merging form with functionality to leave a lasting impression.',
     iconName: 'Compass',
     features: ['2D space planning & statutory sanction layouts', 'High-definition 3D visualization & walkthroughs', 'Passive daylight and ventilation optimization', 'Structural engineering & soil stability assessment'],
-  },
-  {
-    id: 'renovation',
-    title: 'Renovation and Remodeling',
-    tagline: 'Breathing New Life into Spaces',
-    description: 'Breathing New Life into Spaces. With a keen eye for detail, understanding timeless aesthetics, we rejuvenate existing spaces. Our renovation and remodeling services add contemporary charm and functionality to your property, enhancing their value and appeal.',
-    iconName: 'Hammer',
-    features: ['Structural reinforcement and retrofitting', 'Complete interior and exterior facade rejuvenation', 'Space reconfiguration for modern living styles', 'Minimal disruption execution protocols'],
-  },
-  {
-    id: 'property-management',
-    title: 'Property Management',
-    tagline: 'Unlock the Potential of Your Property',
-    description: 'Unlock the potential of your property with our expert management services, tailored to maximize your returns. From tax payments to proactive maintenance, seamless renting, leasing, and beyond – we’ve got every facet of your property covered, ensuring your investments thrive.',
-    iconName: 'ShieldCheck',
-    features: ['Proactive preventative facility maintenance', 'Tenant onboarding and lease administration', 'Property tax and municipal compliance oversight', 'Asset value enhancement and regular inspections'],
-  },
-  {
-    id: 'interior-design',
-    title: 'Interior Design Solutions',
-    tagline: 'Crafted Elegance Inside Out',
-    description: 'Crafted Elegance Inside out. The interiors of a space are just as vital as its exterior. Our interior design solutions infuse spaces with elegance, functionality, and a unique personality, creating harmonious environments that resonate with the occupants at a very cost effective price.',
-    iconName: 'Palette',
-    features: ['Precision modular kitchen & wardrobe installations', 'Custom architectural lighting designs', 'Premium false ceiling & acoustic paneling', 'Curated material selection & German fittings integration'],
   },
 ];
 
