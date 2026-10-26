@@ -31,8 +31,8 @@ const SLIDES = [
   },
   {
     // 2. Real estate consultancy: property scouting, land investment, location planning
-    src: '/assests/videos/hero-2.mp4',
-    poster: '/assests/videos/hero-2.jpg',
+    src: '/assests/videos/hero-3.mp4',
+    poster: '/assests/videos/hero-3.jpg',
     title: 'Real Estate Consultancy',
     lead: 'Your Trusted Guide in',
     accent: 'Property Investment',
@@ -57,6 +57,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
   const next = useCallback(() => setSlide((s) => (s + 1) % SLIDES.length), []);
   const prev = useCallback(() => setSlide((s) => (s - 1 + SLIDES.length) % SLIDES.length), []);
 
+  // Swipe support for touch screens (horizontal swipes only, so vertical page scroll still works)
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx < 0) next();
+    else prev();
+  };
+
   // Play the active video from the start, pause the others, auto-advance
   useEffect(() => {
     videoRefs.current.forEach((v, i) => {
@@ -73,7 +91,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
   }, [slide, next]);
 
   return (
-    <section className="relative overflow-hidden bg-slate-950 text-white min-h-[60svh] lg:min-h-[65svh] flex flex-col justify-end">
+    <section
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      className="relative overflow-hidden bg-slate-950 text-white min-h-[70svh] sm:min-h-[60svh] lg:min-h-[65svh] flex flex-col justify-end touch-pan-y"
+    >
       {/* Background videos + a single dark overlay */}
       <div className="absolute inset-0 z-0">
         {SLIDES.map((sl, i) => (
@@ -97,46 +119,50 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
         <div className="absolute inset-0 bg-slate-950/45 sm:bg-gradient-to-r sm:from-slate-950/70 sm:via-slate-950/35 sm:to-slate-950/15" />
       </div>
 
-      {/* Slide controls */}
-      <div className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 flex items-center gap-2">
+      {/* Slide controls: story-style progress bars across the top on phones (swipe to change),
+          arrows + bars at the top-right from sm and up */}
+      <div className="absolute top-3 left-4 right-4 sm:left-auto sm:right-5 sm:top-5 z-20 flex items-center gap-2">
         <button
           onClick={prev}
           aria-label="Previous slide"
-          className="w-8 h-8 rounded-full bg-black/40 hover:bg-blue-600 border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+          className="hidden sm:flex w-9 h-9 rounded-full bg-black/40 hover:bg-blue-600 border border-white/25 items-center justify-center transition-colors cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-1 sm:flex-none items-center gap-1.5 sm:gap-2">
           {SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => setSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="relative h-1.5 w-6 sm:w-10 rounded-full bg-white/25 overflow-hidden cursor-pointer"
+              aria-current={i === slide}
+              className="flex-1 sm:flex-none sm:w-10 py-3 -my-3 cursor-pointer"
             >
-              {i === slide && (
-                <motion.span
-                  key={slide}
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: SLIDE_DURATION / 1000, ease: 'linear' }}
-                  className="absolute inset-y-0 left-0 bg-sky-300 rounded-full"
-                />
-              )}
+              <span className="relative block h-1 sm:h-1.5 w-full rounded-full bg-white/30 overflow-hidden">
+                {i === slide && (
+                  <motion.span
+                    key={slide}
+                    initial={{ width: '0%' }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: SLIDE_DURATION / 1000, ease: 'linear' }}
+                    className="absolute inset-y-0 left-0 bg-sky-300 rounded-full"
+                  />
+                )}
+              </span>
             </button>
           ))}
         </div>
         <button
           onClick={next}
           aria-label="Next slide"
-          className="w-8 h-8 rounded-full bg-black/40 hover:bg-blue-600 border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+          className="hidden sm:flex w-9 h-9 rounded-full bg-black/40 hover:bg-blue-600 border border-white/25 items-center justify-center transition-colors cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-8 sm:py-10 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-14 pb-8 sm:py-10 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
         <div className="w-full max-w-xl lg:max-w-2xl flex flex-col items-start">
         {/* Slide caption: title, tagline, description */}
         <div className="min-h-[12rem] sm:min-h-[13.5rem] lg:min-h-[14.5rem] flex items-center w-full">
@@ -160,7 +186,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
                   </span>
                 </span>
               </h1>
-              <p className="mt-3 text-sm sm:text-base font-medium text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed max-w-lg text-justify [text-align-last:left] hyphens-auto">
+              <p className="mt-3 text-sm sm:text-base font-medium text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed max-w-lg text-left sm:text-justify sm:[text-align-last:left] hyphens-auto">
                 {SLIDES[slide].description}
               </p>
             </motion.div>
@@ -183,15 +209,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
         </div>
 
         {/* Supporting copy and highlights sit at the lower-right, just above the services scroller. */}
-        <div className="relative translate-y-2 sm:translate-y-3 w-full max-w-xl lg:max-w-2xl lg:justify-self-end flex flex-col items-end text-right">
-          <p className="text-xs sm:text-sm lg:text-base font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed w-full max-w-xl text-justify [text-align-last:left] hyphens-auto">
+        <div className="relative translate-y-2 sm:translate-y-3 w-full max-w-xl lg:max-w-2xl lg:justify-self-end flex flex-col items-start lg:items-end text-left lg:text-right">
+          <p className="text-xs sm:text-sm lg:text-base font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] leading-relaxed w-full max-w-xl text-left sm:text-justify sm:[text-align-last:left] hyphens-auto">
             Welcome to Multiconcepts, your trusted partner for construction, real estate consultancy
             and property management. With years of experience in the industry, we are dedicated
             to delivering outstanding projects that exceed expectations.
           </p>
 
           {/* Highlight pills: pop in one by one, check icons pulse in turn */}
-          <div className="mt-4 sm:mt-5 flex flex-wrap justify-between items-center gap-1.5 sm:gap-2 w-full max-w-xl pb-1">
+          <div className="mt-4 sm:mt-5 flex flex-wrap justify-start sm:justify-between items-center gap-1.5 sm:gap-2 w-full max-w-xl pb-1">
             {HIGHLIGHTS.map((label, i) => (
               <motion.div
                 key={label}
@@ -199,7 +225,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.4 + i * 0.15 }}
                 whileHover={{ y: -2, scale: 1.04 }}
-                className="inline-flex shrink-0 items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-950/60 hover:bg-slate-900/80 backdrop-blur-md border border-white/10 hover:border-emerald-400/40 text-[10px] sm:text-[11px] font-medium text-slate-100 whitespace-nowrap shadow-md shadow-black/20 transition-colors cursor-default"
+                className="inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1.5 sm:px-2 sm:py-1 rounded-lg bg-slate-950/60 hover:bg-slate-900/80 backdrop-blur-md border border-white/10 hover:border-emerald-400/40 text-[10px] sm:text-[11px] font-medium text-slate-100 whitespace-nowrap shadow-md shadow-black/20 transition-colors cursor-default"
               >
                 <CheckCircle2
                   className="w-3 h-3 text-emerald-400 shrink-0 animate-flash"
