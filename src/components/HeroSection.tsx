@@ -94,7 +94,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
     <section
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className="relative overflow-hidden bg-slate-950 text-white min-h-[70svh] sm:min-h-[60svh] lg:min-h-[65svh] flex flex-col justify-end touch-pan-y"
+      className="relative overflow-hidden bg-slate-950 text-white min-h-[88svh] sm:min-h-[78svh] lg:min-h-[85svh] flex flex-col justify-end touch-pan-y"
     >
       {/* Background videos + a single dark overlay */}
       <div className="absolute inset-0 z-0">
@@ -162,7 +162,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-14 pb-8 sm:py-10 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8 sm:py-12 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
         <div className="w-full max-w-xl lg:max-w-2xl flex flex-col items-start">
         {/* Slide caption: title, tagline, description */}
         <div className="min-h-[12rem] sm:min-h-[13.5rem] lg:min-h-[14.5rem] flex items-center w-full">

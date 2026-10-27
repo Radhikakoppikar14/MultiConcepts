@@ -63,8 +63,8 @@ export const Header: React.FC<HeaderProps> = ({
       }`}
     >
       {/* Top utility bar: Streamlined - Name, Phone number, and Email only */}
-      <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 sm:px-6 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-4">
+      <div className="bg-slate-950 text-slate-300 text-xs py-2 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center sm:justify-between gap-4">
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-white font-semibold tracking-wide text-xs sm:text-sm">MultiConcepts</span>
           </div>
@@ -100,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2.5 sm:gap-3.5 text-left group focus-visible:outline-2 focus-visible:outline-blue-600 rounded-lg p-1 transition-all min-w-0 shrink cursor-pointer"
+            className="flex items-center gap-2.5 sm:gap-3.5 text-left group focus-visible:outline-2 focus-visible:outline-blue-600 rounded-lg py-1 pr-1 transition-all min-w-0 shrink cursor-pointer"
           >
             <div className="relative shrink-0">
               <SmartImage
