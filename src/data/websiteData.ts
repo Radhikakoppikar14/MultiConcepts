@@ -5,6 +5,7 @@ export interface ServiceItem {
   description: string;
   iconName: string;
   features: string[];
+  company?: string;
 }
 
 export interface PromiseItem {
@@ -54,6 +55,18 @@ export interface BlogPost {
   imageSrc: string;
 }
 
+/* ---- EASY-TO-REPLACE PLACEHOLDERS (search for "PLACEHOLDER") ---- */
+export const OFFICE_ADDRESS = 'Paramount Enterprises, 14/3, Kunnappa Industrial Area, Narayana Nagar 1st Block, Off Vivekananda Double Road, Doddakalsandra, Bengaluru, Karnataka 560062';
+export const OFFICE_MAP_URL = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(OFFICE_ADDRESS);
+export const TAARRUNI_LOCATION = '[INSERT TAARRUNI OFFICE LOCATION]'; // PLACEHOLDER
+export const GOOGLE_REVIEWS_URL = '#google-reviews-link-to-be-provided'; // PLACEHOLDER: paste Google Business reviews link
+
+/* Company & division structure (display order) */
+export const COMPANY_DIVISIONS = [
+  { company: 'Paramount Enterprises', tagline: 'Construction Par Excellence', divisions: ['Construction - Residential & Commercial Complex', 'Building Quality'] },
+  { company: 'Multi Concepts', tagline: 'Service Redefined', divisions: ['Real Estate Consultancy', 'Property Management Services'] },
+];
+
 export const COMPANY_INFO = {
   name: 'MultiConcepts',
   parentOf: 'Paramount Enterprises',
@@ -61,13 +74,13 @@ export const COMPANY_INFO = {
   tagline: 'Your dreams made a reality',
   subheading: 'Welcome to Multiconcepts, your trusted partner for all your construction needs. With years of experience in this industry, dedicated to delivering outstanding construction projects that exceed all expectations.',
   fullAboutIntro: 'Welcome to Multiconcepts, parent company of Paramount Enterprises, where creativity meets excellence in construction. With a legacy spanning over 25 years, we take immense pride in shaping dreams and crafting spaces that inspire.',
-  address: '2073, BCC Layout, Blue Building, Near Vajarahalli Metro station, Raghuvanahalli, Kanakapura Main Road, Bangalore-560062',
-  mapUrl: 'https://maps.google.com/?q=2073,+BCC+Layout,+Blue+Building,+Near+Vajarahalli+Metro+station,+Raghuvanahalli,+Kanakapura+Main+Road,+Bangalore-560062',
+  address: OFFICE_ADDRESS,
+  mapUrl: OFFICE_MAP_URL,
   phones: ['+91-9886032343', '+91-9845026262'],
   email: 'reach@multiconcepts.in',
   hours: {
     weekdays: 'Mon - Fri: 9:00 AM - 6:00 PM',
-    saturday: 'Saturday: 10:00 AM - 2:00 PM',
+    saturday: 'Sat: 10:00 AM - 2:00 PM',
     sunday: 'Sunday: Closed',
   },
   logo: '/assests/images/logo.jpg',
@@ -81,15 +94,15 @@ export const COMPANY_INFO = {
 
 export const STATS = [
   { value: 150, suffix: '+', label: 'Projects Completed', description: 'Delivered across residential and commercial sectors' },
-  { value: 200, suffix: '+', label: 'Happy Clients', description: 'Families and businesses satisfied with our craftsmanship' },
+  { value: 500, suffix: '+', label: 'Happy Clients', description: 'Families and businesses satisfied with our craftsmanship' },
   { value: 25, suffix: '+', label: 'Years Experience', description: 'Over two decades of architectural and construction mastery' },
-  { value: 25, suffix: '+', label: 'Awards Won', description: 'Recognized for structural integrity, innovation & design' },
 ];
 
 export const SERVICES: ServiceItem[] = [
   {
     id: 'construction',
-    title: 'Residential & Commercial Construction',
+    company: 'Paramount Enterprises',
+    title: 'Construction - Residential & Commercial Complex',
     tagline: 'Building Quality, Shaping Futures',
     description: 'Delivering expert construction execution for both residential and commercial projects to bring structural blueprints to life.',
     iconName: 'Building2',
@@ -97,6 +110,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     id: 'real-estate-consultancy',
+    company: 'Multi Concepts',
     title: 'Real Estate Consultancy',
     tagline: 'Your Trusted Guide in Property Investment',
     description: 'Providing professional guidance, market insights, and strategic assistance to clients for purchasing land, plots, and properties.',
@@ -105,6 +119,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     id: 'property-management',
+    company: 'Multi Concepts',
     title: 'Property Management Services',
     tagline: 'Total Care for Your Valued Assets',
     description: 'Managing properties completely on behalf of owners and NRIs, taking care of every operational and administrative detail.',

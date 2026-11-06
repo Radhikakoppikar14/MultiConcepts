@@ -23,7 +23,8 @@ const SLIDES = [
     // 1. Construction: active residential and commercial building progress
     src: '/assests/videos/hero-1.mp4',
     poster: '/assests/videos/hero-1.jpg',
-    title: 'Construction — Residential / Commercial Complexes',
+    company: 'Paramount Enterprises',
+    title: 'Construction - Residential & Commercial Complex',
     lead: 'Building Quality,',
     accent: 'Shaping Futures',
     description:
@@ -33,6 +34,7 @@ const SLIDES = [
     // 2. Real estate consultancy: property scouting, land investment, location planning
     src: '/assests/videos/hero-3.mp4',
     poster: '/assests/videos/hero-3.jpg',
+    company: 'Multi Concepts',
     title: 'Real Estate Consultancy',
     lead: 'Your Trusted Guide in',
     accent: 'Property Investment',
@@ -43,6 +45,7 @@ const SLIDES = [
     // 3. Property management: well-maintained interiors / professional property care
     src: '/assests/videos/hero-3.mp4',
     poster: '/assests/videos/hero-3.jpg',
+    company: 'Multi Concepts',
     title: 'Property Management Services',
     lead: 'Total Care for',
     accent: 'Your Valued Assets',
@@ -94,7 +97,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
     <section
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className="relative overflow-hidden bg-slate-950 text-white min-h-[70svh] sm:min-h-[60svh] lg:min-h-[65svh] flex flex-col justify-end touch-pan-y"
+      className="relative overflow-hidden bg-slate-950 text-white min-h-[88svh] sm:min-h-[78svh] lg:min-h-[85svh] flex flex-col justify-end touch-pan-y"
     >
       {/* Background videos + a single dark overlay */}
       <div className="absolute inset-0 z-0">
@@ -162,7 +165,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-14 pb-8 sm:py-10 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8 sm:py-12 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-end">
         <div className="w-full max-w-xl lg:max-w-2xl flex flex-col items-start">
         {/* Slide caption: title, tagline, description */}
         <div className="min-h-[12rem] sm:min-h-[13.5rem] lg:min-h-[14.5rem] flex items-center w-full">
@@ -175,7 +178,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
               transition={{ duration: 0.4 }}
               className="w-full"
             >
-              <p className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] mb-3">
+              <p className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+                {SLIDES[slide].company}
+              </p>
+              <p className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] mt-1 mb-3">
                 {SLIDES[slide].title}
               </p>
               <h1 className="text-[1.625rem] min-[400px]:text-3xl sm:text-4xl lg:text-[2.6rem] xl:text-5xl font-extrabold tracking-tight text-white leading-[1.1]">
@@ -194,7 +200,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreGallery, onOp
         </div>
 
         {/* Stats: number + label only */}
-        <div className="mt-5 sm:mt-6 w-full pt-4 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
+        <div className="mt-5 sm:mt-6 w-full pt-4 border-t border-white/15 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6">
           {STATS.map((stat, i) => (
             <div key={i} className="text-left">
               <div className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline justify-start">

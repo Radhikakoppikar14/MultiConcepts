@@ -20,7 +20,7 @@ import { Reveal, StaggerGroup, StaggerItem, EASE } from './Effects';
 /* ------------------------------------------------------------------ */
 
 const MARQUEE_ITEMS = [
-  { icon: Building2, label: 'Residential & Commercial Construction' },
+  { icon: Building2, label: 'Construction - Residential & Commercial Complex' },
   { icon: ClipboardList, label: 'Real Estate Consultancy' },
   { icon: ShieldCheck, label: 'Property Management' },
   { icon: Paintbrush, label: 'Interior Works' },

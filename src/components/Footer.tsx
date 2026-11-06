@@ -10,7 +10,7 @@ import {
   Send,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { COMPANY_INFO, SERVICES } from '../data/websiteData';
+import { COMPANY_INFO, SERVICES, COMPANY_DIVISIONS } from '../data/websiteData';
 import { Reveal, StaggerGroup, StaggerItem } from './Animations';
 
 interface FooterProps {
@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({
   ];
 
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-16 pb-12 border-t border-slate-800 relative overflow-hidden">
+    <footer className="bg-slate-950 text-slate-300 pt-12 pb-8 border-t border-slate-800 relative overflow-hidden">
       {/* Subtle ambient light glows */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
@@ -70,7 +70,7 @@ export const Footer: React.FC<FooterProps> = ({
                   Multi<span className="text-blue-400">Concepts</span>
                 </span>
                 <span className="text-xs text-slate-400 font-medium block">
-                  Construction par Excellence · Paramount Enterprises
+                  Service Redefined
                 </span>
               </div>
             </div>
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({
         </Reveal>
 
         {/* 3 Spacious Columns (Practice Branding, Links, and Contact Info) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-14 border-b border-slate-800/80">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-8 border-b border-slate-800/80">
           {/* Column 1: The Practice & Credentials (lg:col-span-4) with Reveal animation */}
           <Reveal y={15} delay={0.05} className="lg:col-span-4 space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-blue-400">
@@ -105,7 +105,7 @@ export const Footer: React.FC<FooterProps> = ({
             <StaggerGroup stagger={0.06} className="pt-2 flex flex-col gap-2 text-xs text-slate-400">
               <StaggerItem className="flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span>Over 25 Years of Bangalore Engineering Legacy</span>
+                <span>Over 25 Years of Bangalore Construction Legacy</span>
               </StaggerItem>
               <StaggerItem className="flex items-center gap-2">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -118,7 +118,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="lg:col-span-4 space-y-4">
             <Reveal y={10} delay={0.1}>
               <h4 className="text-xs font-bold uppercase tracking-wider text-blue-400">
-                Navigation & Capabilities
+                Navigation
               </h4>
             </Reveal>
 
@@ -136,17 +136,6 @@ export const Footer: React.FC<FooterProps> = ({
                   </button>
                 </StaggerItem>
               ))}
-              <StaggerItem>
-                <button
-                  onClick={() => {
-                    onSelectTab('services');
-                    scrollToTop();
-                  }}
-                  className="hover:text-blue-400 transition-colors text-left truncate cursor-pointer hover:underline w-full"
-                >
-                  Civil Engineering
-                </button>
-              </StaggerItem>
               <StaggerItem>
                 <button
                   onClick={() => {
@@ -174,7 +163,7 @@ export const Footer: React.FC<FooterProps> = ({
               <StaggerItem className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-semibold text-white block mb-0.5">Studio Location</span>
+                  <span className="font-semibold text-white block mb-0.5">Office Location</span>
                   <p className="text-slate-400 leading-relaxed text-[11px] sm:text-xs">
                     {COMPANY_INFO.address}
                   </p>
@@ -228,12 +217,23 @@ export const Footer: React.FC<FooterProps> = ({
                 <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-semibold text-white block mb-0.5">Working Hours</span>
-                  <p className="text-slate-400 text-[11px] sm:text-xs">
-                    {COMPANY_INFO.hours.weekdays} · Sat: 10am - 2pm
-                  </p>
+                  <p className="text-slate-400 text-[11px] sm:text-xs">{COMPANY_INFO.hours.weekdays}</p>
+                  <p className="text-slate-400 text-[11px] sm:text-xs">{COMPANY_INFO.hours.saturday}</p>
                 </div>
               </StaggerItem>
             </StaggerGroup>
+          </div>
+        {/* Companies & divisions, in display order (compact row) */}
+          <div className="md:col-span-2 lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 pt-6 border-t border-slate-800/80 text-xs">
+            {COMPANY_DIVISIONS.map((c, i) => (
+              <div key={i}>
+                <div className="font-semibold text-white">{c.company}</div>
+                <div className="text-[11px] text-sky-300 italic">{c.tagline}</div>
+                <ul className="mt-1 text-slate-400 space-y-0.5">
+                  {c.divisions.map((d) => (<li key={d}>{d}</li>))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -243,7 +243,7 @@ export const Footer: React.FC<FooterProps> = ({
             <p>© {COMPANY_INFO.copyrightYear} MultiConcepts & Paramount Enterprises. All Rights Reserved.</p>
 
             <div className="flex items-center gap-6">
-              <span>Developed by <span className="font-semibold text-white">Taarruni Enterprises</span></span>
+              <span>Developed by <span className="font-semibold text-white">Taarruni</span></span>
 
             </div>
           </div>

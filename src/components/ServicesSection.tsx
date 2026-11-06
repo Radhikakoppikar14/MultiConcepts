@@ -10,7 +10,6 @@ import {
   ArrowRight,
   Check,
   Sparkles,
-  Layers,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SERVICES } from '../data/websiteData';
@@ -50,14 +49,23 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
   const renderCard = (service: (typeof SERVICES)[number], index: number) => (
             <motion.div
-              initial={{ opacity: 0, rotateY: index % 2 === 0 ? -70 : 70, scale: 0.9 }}
-              whileInView={{ opacity: 1, rotateY: 0, scale: 1 }}
-              viewport={{ margin: '-60px' }}
-              transition={{ duration: 0.8, delay: (index % 3) * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              style={{ transformPerspective: 1200 }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: (index % 3) * 0.12, ease: 'easeOut' }}
+              onMouseMove={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
+                e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
+              }}
               whileHover={{ y: -8 }}
               className="card-interactive group flex h-full flex-col glass hover:bg-white/10 rounded-3xl hover:border-sky-400/50 p-5 sm:p-9 relative overflow-hidden"
             >
+              {/* Soft spotlight that follows the cursor on hover (desktop) */}
+              <div
+                className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: 'radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(56,189,248,0.16), transparent 60%)' }}
+              />
               {/* Dynamic top gradient bar on hover */}
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -72,6 +80,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   </h3>
                 </div>
 
+                {service.company && (
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">
+                    {service.company}
+                  </p>
+                )}
                 <p className="text-xs font-semibold uppercase tracking-wider text-sky-400 mb-3">
                   {service.tagline}
                 </p>
@@ -121,10 +134,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Live Beacon Badge */}
         <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs font-bold uppercase tracking-wider text-sky-300 mb-4">
-            <Layers className="w-3.5 h-3.5 text-sky-400" />
-            <span>MultiConcepts Engineering Capabilities</span>
-          </div>
           <h2 className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight text-balance">
             Our <span className="text-gradient-live">Services</span>
           </h2>

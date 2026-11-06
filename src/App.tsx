@@ -108,9 +108,8 @@ export default function App() {
               <LiveMarquee />
 
               {/* Core Services: carousel, 3 cards at a time sliding to the next 3 */}
-            <SectionReveal>
+              {/* No SectionReveal here: its fade/rise left a pale gap under the ribbon */}
               <ServicesSection layout="carousel" onSelectServiceForInquiry={handleServiceInquiry} />
-            </SectionReveal>
 
               {/* Our Promise: Quality, Time, Cost */}
               <SectionReveal>

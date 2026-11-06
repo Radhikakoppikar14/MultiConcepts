@@ -334,38 +334,22 @@ export const AboutView: React.FC<AboutViewProps> = ({
           {ABOUT_DETAILS.clientCentricText}
         </p>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Magnetic className="w-full sm:w-auto">
-          <motion.button
-            animate={reduce ? undefined : {
-              boxShadow: [
-                '0 10px 25px -8px rgba(29,78,216,0.35)',
-                '0 16px 40px -6px rgba(56,189,248,0.55)',
-                '0 10px 25px -8px rgba(29,78,216,0.35)',
-              ],
-            }}
-            transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
+        <div className="mt-8 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4">
+          <button
             onClick={onOpenContact}
-            className="btn-live-smooth btn-shimmer shine-hover group inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 hover:from-blue-600 hover:to-indigo-500 rounded-2xl shadow-xl shadow-blue-700/25 hover:shadow-2xl hover:shadow-blue-600/35 transition-all cursor-pointer border border-blue-500/30"
+            className="group inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 hover:from-blue-600 hover:to-indigo-500 rounded-2xl transition-colors cursor-pointer border border-blue-500/30"
           >
             <span>Discuss Your Vision</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-          </motion.button>
-          </Magnetic>
+            <ArrowRight className="w-4 h-4" />
+          </button>
 
-          <Magnetic className="w-full sm:w-auto">
-          <motion.button
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
+          <button
             onClick={onExploreGallery}
-            className="btn-live-smooth group inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm sm:text-base font-semibold text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-all cursor-pointer border border-slate-300 shadow-md hover:shadow-lg"
+            className="group inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm sm:text-base font-semibold text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors cursor-pointer border border-slate-300"
           >
             <span>View Our Past Projects</span>
-            <ChevronRight className="w-4 h-4 text-slate-500 transition-transform duration-300 group-hover:translate-x-1" />
-          </motion.button>
-          </Magnetic>
+            <ChevronRight className="w-4 h-4 text-slate-500" />
+          </button>
         </div>
       </div>
       </Reveal>

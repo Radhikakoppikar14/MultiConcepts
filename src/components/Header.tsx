@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Phone, Mail, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Menu, X, Phone, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COMPANY_INFO } from '../data/websiteData';
 import { SmartImage } from './Effects';
@@ -63,8 +63,8 @@ export const Header: React.FC<HeaderProps> = ({
       }`}
     >
       {/* Top utility bar: Streamlined - Name, Phone number, and Email only */}
-      <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 sm:px-6 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-4">
+      <div className="bg-slate-950 text-slate-300 text-xs py-2 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center sm:justify-between gap-4">
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-white font-semibold tracking-wide text-xs sm:text-sm">MultiConcepts</span>
           </div>
@@ -100,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2.5 sm:gap-3.5 text-left group focus-visible:outline-2 focus-visible:outline-blue-600 rounded-lg p-1 transition-all min-w-0 shrink cursor-pointer"
+            className="flex items-center gap-2.5 sm:gap-3.5 text-left group focus-visible:outline-2 focus-visible:outline-blue-600 rounded-lg py-1 pr-1 transition-all min-w-0 shrink cursor-pointer"
           >
             <div className="relative shrink-0">
               <SmartImage
@@ -112,12 +112,11 @@ export const Header: React.FC<HeaderProps> = ({
               />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-lg sm:text-2xl font-bold tracking-tight text-slate-900 leading-tight group-hover:text-blue-700 transition-colors truncate">
+              <span className="text-lg sm:text-lg xl:text-xl font-bold tracking-tight text-slate-900 leading-tight group-hover:text-blue-700 transition-colors truncate sm:overflow-visible sm:whitespace-nowrap">
                 Multi<span className="text-blue-700">Concepts</span>
               </span>
-              <span className="text-[9px] sm:text-[11px] uppercase tracking-wider font-semibold text-slate-500 mt-0.5 truncate flex items-center gap-1">
-                <span>Construction par Excellence</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block animate-pulse" />
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold text-slate-500 mt-0.5 truncate sm:overflow-visible sm:whitespace-nowrap flex items-center gap-1">
+                <span>Service Redefined</span>
               </span>
             </div>
           </motion.button>
@@ -133,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.25 + navItems.indexOf(item) * 0.07, ease: 'easeOut' }}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl whitespace-nowrap cursor-pointer group ${
+                  className={`relative px-2.5 xl:px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl whitespace-nowrap cursor-pointer group ${
                     isActive
                       ? 'text-blue-700 font-semibold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:scale-105 active:scale-95'
@@ -152,18 +151,43 @@ export const Header: React.FC<HeaderProps> = ({
                 </motion.button>
               );
             })}
+            <motion.button
+              initial={{ opacity: 0, y: -14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.25 + navItems.length * 0.07, ease: 'easeOut' }}
+              onClick={onOpenContactModal}
+              className="relative px-2.5 xl:px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl whitespace-nowrap cursor-pointer group text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:scale-105 active:scale-95"
+            >
+              <span className="relative z-10 transition-transform duration-200 inline-block group-hover:translate-y-[-1px]">
+                Contact Us
+              </span>
+            </motion.button>
           </nav>
 
-          {/* Primary CTA button with live shimmer loop and hover transition */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Paramount Enterprises logo + name (same style as the MultiConcepts lockup) */}
+          <div className="hidden lg:flex items-center">
             <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onOpenContactModal}
-              className="btn-live-smooth btn-shimmer shine-hover group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 hover:from-blue-600 hover:to-indigo-500 transition-all duration-300 rounded-xl shadow-md hover:shadow-xl hover:shadow-blue-600/30 whitespace-nowrap cursor-pointer border border-blue-500/20"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => handleNavClick('about')}
+              className="flex items-center gap-3.5 text-left group focus-visible:outline-2 focus-visible:outline-blue-600 rounded-lg py-1 pr-1 transition-all min-w-0 shrink cursor-pointer"
             >
-              <span>Contact Us</span>
-              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              <div className="relative shrink-0">
+                <SmartImage
+                  src={COMPANY_INFO.badge}
+                  alt="Paramount Enterprises Logo"
+                  className="h-full! w-auto! max-w-none object-contain! transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
+                  wrapperClassName="h-11 sm:h-12 w-auto! min-w-11 shrink-0 bg-transparent! overflow-visible!"
+                />
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-lg xl:text-xl font-bold tracking-tight text-slate-900 leading-tight group-hover:text-blue-700 transition-colors whitespace-nowrap">
+                  Paramount <span className="text-blue-700">Enterprises</span>
+                </span>
+                <span className="text-[9px] xl:text-[10px] uppercase tracking-wider font-semibold text-slate-500 mt-0.5 whitespace-nowrap">
+                  Construction Par Excellence
+                </span>
+              </div>
             </motion.button>
           </div>
 
@@ -214,18 +238,28 @@ export const Header: React.FC<HeaderProps> = ({
                   </motion.button>
                 );
               })}
+              <button
+                onClick={() => { setMobileMenuOpen(false); onOpenContactModal(); }}
+                className="w-full text-left px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 text-slate-700 hover:bg-slate-50 cursor-pointer"
+              >
+                Contact Us
+              </button>
 
               <div className="pt-4 mt-2 border-t border-slate-100 space-y-3">
-                <motion.button
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenContactModal();
-                  }}
-                  className="btn-live-smooth btn-shimmer shine-hover w-full py-3.5 px-4 text-center text-sm font-semibold text-white bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 rounded-xl shadow-md transition-all cursor-pointer"
+                <button
+                  onClick={() => handleNavClick('about')}
+                  className="w-full flex items-center gap-3 px-2 py-1 text-left cursor-pointer"
                 >
-                  Contact Us / Get a Quote
-                </motion.button>
+                  <img src={COMPANY_INFO.badge} alt="Paramount Enterprises Logo" className="h-11 w-auto object-contain shrink-0" />
+                  <span className="flex flex-col min-w-0">
+                    <span className="text-lg font-bold tracking-tight text-slate-900 leading-tight truncate">
+                      Paramount <span className="text-blue-700">Enterprises</span>
+                    </span>
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 mt-0.5 truncate">
+                      Construction Par Excellence
+                    </span>
+                  </span>
+                </button>
                 <div className="px-2 pt-2 text-xs text-slate-500 space-y-1.5 border-t border-slate-100">
                   <p className="flex items-start gap-1.5">
                     <span>📍</span>

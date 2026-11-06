@@ -77,7 +77,7 @@ export const AssuranceSection: React.FC<AssuranceSectionProps> = ({
 
               <div className="text-xl font-bold text-white tracking-tight">Paramount Enterprises</div>
               <div className="text-xs text-blue-300 font-semibold uppercase tracking-wider mt-1">
-                Division of MultiConcepts
+                Construction Par Excellence
               </div>
 
               <div className="mt-5 pt-4 border-t border-white/15 space-y-2 text-xs text-slate-300 text-left">

@@ -459,8 +459,8 @@ export const StaggerItem: React.FC<{
 };
 
 /* ------------------------------------------------------------------ */
-/*  SectionReveal: whole section fades + rises in, then fades out      */
-/*  softly as it scrolls away (scroll-linked, no blur = smooth)        */
+/*  SectionReveal: simple fade-in once, when the section scrolls into  */
+/*  view (no movement, no fade-out, so no gaps or dimming)             */
 /* ------------------------------------------------------------------ */
 
 export const SectionReveal: React.FC<{
@@ -468,18 +468,17 @@ export const SectionReveal: React.FC<{
   className?: string;
 }> = ({ children, className = '' }) => {
   const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.07, 0.92, 1], [0.2, 1, 1, 0.2]);
-  const y = useTransform(scrollYProgress, [0, 0.07], [48, 0]);
 
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
-    <motion.div ref={ref} style={{ opacity, y }} className={className}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.7, ease: 'easeOut' }}
+      className={className}
+    >
       {children}
     </motion.div>
   );
