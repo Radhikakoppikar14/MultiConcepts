@@ -58,18 +58,6 @@ export const AboutView: React.FC<AboutViewProps> = ({
             />
           )}
           <div className="absolute inset-0 bg-slate-950/50 backdrop-brightness-[0.88] z-[2]" />
-          {/* Drifting blueprint grid */}
-          <motion.div
-            aria-hidden
-            animate={reduce ? undefined : { backgroundPosition: ['0px 0px', '56px 56px'] }}
-            transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-0 z-[2] opacity-[0.12] pointer-events-none"
-            style={{
-              backgroundImage:
-                'linear-gradient(rgba(125,211,252,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(125,211,252,0.7) 1px, transparent 1px)',
-              backgroundSize: '56px 56px',
-            }}
-          />
           <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-slate-950/60 to-transparent pointer-events-none z-[3]" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none z-[3]" />
 
